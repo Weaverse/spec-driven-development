@@ -8,7 +8,11 @@ One markdown file. One folder structure. Works with any AI agent or workflow.
 
 ## Get started
 
-Read [`SETUP.md`](./SETUP.md).
+Tell your AI agent:
+
+```
+Read https://github.com/Weaverse/spec-driven-development/blob/main/SETUP.md and set up SDD for this project.
+```
 
 ## Contributing
 

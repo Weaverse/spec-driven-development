@@ -5,7 +5,7 @@
 Copy [`SPEC-DRIVEN-DEVELOPMENT.md`](./SPEC-DRIVEN-DEVELOPMENT.md) to your project root:
 
 ```bash
-curl -o SPEC-DRIVEN-DEVELOPMENT.md https://raw.githubusercontent.com/hta218/spec-driven-development/main/SPEC-DRIVEN-DEVELOPMENT.md
+curl -o SPEC-DRIVEN-DEVELOPMENT.md https://raw.githubusercontent.com/Weaverse/spec-driven-development/main/SPEC-DRIVEN-DEVELOPMENT.md
 ```
 
 The file contains everything: principles, structures, and rules.
