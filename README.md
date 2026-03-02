@@ -12,8 +12,8 @@ Read [`SETUP.md`](./SETUP.md).
 
 ## Contributing
 
-Feedback welcome via GitHub issues.
+PRs are welcome!
 
-## License
+---
 
-MIT
+The Weaverse Team 🤝
