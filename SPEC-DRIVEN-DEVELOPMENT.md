@@ -42,13 +42,7 @@ project-root/
 │   │   └── work-logs.md       📝 Timeline & change history (optional)
 │   │
 │   ├── 002--billing-integration--2026-03-05/
-│   │   ├── README.md
-│   │   ├── plan.md
-│   │   └── work-logs.md
-│   │
-│   └── 003--notification-system--2026-03-10/
-│       ├── README.md
-│       └── plan.md            (no work-logs — single-session feature)
+│       └── ...
 │
 ├── src/                        ← your codebase (untouched by this convention)
 └── ...

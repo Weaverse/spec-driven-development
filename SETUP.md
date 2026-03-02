@@ -16,8 +16,6 @@ Work with your preferred planning tool or agent as normal. Just mention the conv
 
 > Follow `SPEC-DRIVEN-DEVELOPMENT.md` and ...
 
-Or add it to your agent's instruction file (`CLAUDE.md`, `.cursor/rules/`, etc.) so it applies automatically.
-
 ## Step 3: Test it (optional)
 
 Try this sample prompt with your agent to see if it work:
