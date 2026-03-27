@@ -105,7 +105,7 @@ skills/weaverse-hydrogen/
     └── components-registry.ts
 ```
 
-> Sourced from [github.com/Weaverse/skills](https://github.com/Weaverse/skills)
+
 
 ---
 

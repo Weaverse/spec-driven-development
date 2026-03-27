@@ -30,7 +30,7 @@ skills/
 
 | Skill | Authoritative Source |
 |-------|---------------------|
-| `weaverse-hydrogen/` | https://github.com/Weaverse/skills — fetch raw files directly |
+| `weaverse-hydrogen/` | This repo — authored directly in `skills/weaverse-hydrogen/` |
 | `hydrogen-cookbooks/references/` | Local: `/Users/hta218/Documents/work/workspace/pilot/.guides/cookbooks/` |
 | `hydrogen-upgrades/references/` | Local: `/Users/hta218/Documents/work/workspace/pilot/.guides/hydrogen-upgrades/` |
 
@@ -42,16 +42,11 @@ The only files in this repo that are authored here (not sourced) are the `SKILL.
 2. Copy it into the corresponding `references/` folder here
 3. Update the `SKILL.md` index table for that skill
 
-## How to Sync weaverse-hydrogen With Weaverse/skills
+## Content Maintenance
 
-Fetch raw files directly from GitHub:
+### weaverse-hydrogen/
 
-```bash
-curl -o skills/weaverse-hydrogen/SKILL.md \
-  https://raw.githubusercontent.com/Weaverse/skills/main/SKILL.md
-```
-
-Repeat for each file in `references/` and `examples/`. Do not manually edit these files — changes should flow from the upstream source.
+Content is now authored directly in this repo. Edit files in `skills/weaverse-hydrogen/` as needed.
 
 ## Skill File Format
 
