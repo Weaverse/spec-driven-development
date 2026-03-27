@@ -38,38 +38,6 @@ skills/shopify-hydrogen/
 
 ---
 
-## weaverse-hydrogen
-
-Everything needed to build a Shopify Hydrogen storefront with Weaverse — component anatomy, schema authoring, data fetching, styling, the Weaverse API, React Router v7 conventions, deployment, and advanced features.
-
-```
-skills/weaverse-hydrogen/
-├── SKILL.md
-├── references/
-│   ├── 01-project-structure.md
-│   ├── 02-creating-components.md
-│   ├── 03-component-schema.md
-│   ├── 04-input-settings.md
-│   ├── 05-data-fetching.md
-│   ├── 06-styling-theming.md
-│   ├── 07-react-router-7.md
-│   ├── 08-hydrogen-fundamentals.md
-│   ├── 09-deployment.md
-│   ├── 10-weaverse-api.md
-│   ├── 11-advanced-features.md
-│   ├── 12-pilot-theme.md
-│   └── 13-migration-v5.md
-└── examples/
-    ├── hero-banner.tsx
-    ├── featured-collection.tsx
-    ├── product-card.tsx
-    └── components-registry.ts
-```
-
-> Sourced from [github.com/Weaverse/skills](https://github.com/Weaverse/skills)
-
----
-
 ## hydrogen-cookbooks
 
 Self-contained feature recipes. Each cookbook covers prerequisites, step-by-step implementation, and troubleshooting. File names reference the Hydrogen skeleton — adapt paths to your project.
@@ -106,6 +74,38 @@ skills/hydrogen-upgrades/
     ├── upgrade-2025.5.0-to-2025.7.0.md
     └── upgrade-2025.7.0-to-2026.1.0.md
 ```
+
+---
+
+## weaverse-hydrogen
+
+Everything needed to build a Shopify Hydrogen storefront with Weaverse — component anatomy, schema authoring, data fetching, styling, the Weaverse API, React Router v7 conventions, deployment, and advanced features.
+
+```
+skills/weaverse-hydrogen/
+├── SKILL.md
+├── references/
+│   ├── 01-project-structure.md
+│   ├── 02-creating-components.md
+│   ├── 03-component-schema.md
+│   ├── 04-input-settings.md
+│   ├── 05-data-fetching.md
+│   ├── 06-styling-theming.md
+│   ├── 07-react-router-7.md
+│   ├── 08-hydrogen-fundamentals.md
+│   ├── 09-deployment.md
+│   ├── 10-weaverse-api.md
+│   ├── 11-advanced-features.md
+│   ├── 12-pilot-theme.md
+│   └── 13-migration-v5.md
+└── examples/
+    ├── hero-banner.tsx
+    ├── featured-collection.tsx
+    ├── product-card.tsx
+    └── components-registry.ts
+```
+
+> Sourced from [github.com/Weaverse/skills](https://github.com/Weaverse/skills)
 
 ---
 
