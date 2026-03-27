@@ -24,8 +24,10 @@ export let schema = createSchema({
 ```
 
 Import from either package:
+```tsx
 import { createSchema } from '@weaverse/hydrogen';   // Recommended
 import { createSchema } from '@weaverse/schema';      // Advanced
+```
 
 ## Properties
 
@@ -42,6 +44,7 @@ Unique identifier for the component. Used internally to map components to schema
 
 Human-readable name displayed in Studio's page outline and component browser.
 
+**Rules:**
 - Use Title Case: `Hero Banner`, `Product Card`
 - Keep concise: 1-3 words
 - Describe the component's purpose
@@ -50,13 +53,16 @@ Human-readable name displayed in Studio's page outline and component browser.
 
 Array of `InspectorGroup` objects that define the editor UI:
 
+```tsx
 interface InspectorGroup {
   group: string;           // Group label (collapsible section in editor)
   inputs: Input[];         // Array of input configurations
 }
+```
 
 **Recommended group order:** Content → Style → Settings → Advanced
 
+```tsx
 settings: [
   {
     group: 'Content',
@@ -64,14 +70,25 @@ settings: [
       { type: 'text', name: 'heading', label: 'Heading', defaultValue: 'Hello' },
       { type: 'richtext', name: 'body', label: 'Body Content' },
     ],
+  },
+  {
     group: 'Style',
+    inputs: [
       { type: 'color', name: 'backgroundColor', label: 'Background Color', defaultValue: '#ffffff' },
+      {
         type: 'select', name: 'textAlign', label: 'Text Alignment', defaultValue: 'center',
         configs: {
           options: [
             { value: 'left', label: 'Left' },
             { value: 'center', label: 'Center' },
             { value: 'right', label: 'Right' },
+          ],
+        },
+      },
+    ],
+  },
+],
+```
 
 > **⚠️ `inspector` is deprecated.** Always use `settings`. If both exist, `settings` takes priority.
 
@@ -79,7 +96,9 @@ settings: [
 
 Array of component `type` strings that can be nested inside this component. If omitted, the component accepts no children.
 
+```tsx
 childTypes: ['product-card', 'collection-card', 'empty-state'],
+```
 
 - Only components with matching `type` values appear as options in Studio
 - The parent component must render `{children}` in its JSX
@@ -88,6 +107,7 @@ childTypes: ['product-card', 'collection-card', 'empty-state'],
 
 Default configuration and child components when the section is first added to a page:
 
+```tsx
 presets: {
   // Default values for input settings
   heading: 'Featured Products',
@@ -98,6 +118,11 @@ presets: {
   // Default child components
   children: [
     { type: 'product-card' },
+    { type: 'product-card' },
+    { type: 'product-card' },
+  ],
+},
+```
 
 - Property names match `name` fields in your `settings` inputs
 - `children` array creates instances of child components with optional preset data
@@ -107,7 +132,9 @@ presets: {
 
 Maximum number of instances allowed within the parent container (or page if no parent):
 
+```tsx
 limit: 1,  // Only one instance allowed
+```
 
 - Studio disables the "add" button when limit is reached
 - Use for components that should appear only once (announcement bars, footers)
@@ -116,8 +143,11 @@ limit: 1,  // Only one instance allowed
 
 Controls which page types and layout groups can use this component:
 
+```tsx
 enabledOn: {
   pages: ['PRODUCT', 'COLLECTION'],  // Only on product and collection pages
+},
+```
 
 **Page types:**
 
@@ -138,33 +168,81 @@ enabledOn: {
 
 ## Complete Example
 
+```tsx
+import { createSchema } from '@weaverse/hydrogen';
 
+export let schema = createSchema({
   type: 'featured-collection',
   title: 'Featured Collection',
   limit: 3,
+  enabledOn: {
     pages: ['INDEX', 'COLLECTION'],
+  },
+  settings: [
+    {
+      group: 'Content',
+      inputs: [
         { type: 'text', name: 'heading', label: 'Heading', defaultValue: 'Featured Products' },
         { type: 'textarea', name: 'description', label: 'Description' },
+        {
           type: 'collection', name: 'collection', label: 'Collection',
           shouldRevalidate: true,
+        },
+      ],
+    },
+    {
       group: 'Layout',
+      inputs: [
+        {
           type: 'range', name: 'productsPerRow', label: 'Products per Row',
           defaultValue: 4,
           configs: { min: 2, max: 6, step: 1, unit: '' },
+        },
+        {
           type: 'range', name: 'gap', label: 'Gap',
           defaultValue: 16,
           configs: { min: 0, max: 48, step: 4, unit: 'px' },
+        },
+        {
           type: 'toggle-group', name: 'textAlign', label: 'Text Alignment',
           defaultValue: 'center',
+          configs: {
+            options: [
+              { value: 'left', label: 'Left' },
+              { value: 'center', label: 'Center' },
+              { value: 'right', label: 'Right' },
+            ],
+          },
+        },
+      ],
+    },
+    {
       group: 'Settings',
+      inputs: [
         { type: 'switch', name: 'showViewAll', label: 'Show View All Button', defaultValue: true },
+        {
           type: 'text', name: 'viewAllText', label: 'View All Text',
           defaultValue: 'View All',
           condition: (data) => data.showViewAll === true,
+        },
+      ],
+    },
+  ],
   childTypes: ['product-card'],
+  presets: {
+    heading: 'Featured Products',
     description: 'Check out our latest arrivals',
     productsPerRow: 4,
     gap: 16,
     textAlign: 'center',
     showViewAll: true,
     viewAllText: 'View All',
+    children: [
+      { type: 'product-card' },
+      { type: 'product-card' },
+      { type: 'product-card' },
+      { type: 'product-card' },
+    ],
+  },
+});
+```

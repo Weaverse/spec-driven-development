@@ -33,7 +33,9 @@ vite.config.ts
 react-router.config.ts
 tailwind.config.js
 .env
+```
 
+---
 
 ## 2. Component Anatomy
 
@@ -51,9 +53,11 @@ export let schema = createSchema({ ... });
 
 // 3. Loader export (optional) — server-side data fetching
 export let loader = async (args: ComponentLoaderArgs<DataType>) => { ... };
+```
 
 ### Minimal Example
 
+```tsx
 import { createSchema } from '@weaverse/hydrogen';
 import type { HydrogenComponentProps } from '@weaverse/hydrogen';
 
@@ -70,6 +74,7 @@ function Banner({ heading, description, children, ...rest }: BannerProps) {
       {children}
     </section>
   );
+}
 
 export default Banner;
 
@@ -84,10 +89,13 @@ export let schema = createSchema({
         { type: 'textarea', name: 'description', label: 'Description', defaultValue: 'Welcome to our store.' },
       ],
     },
+  ],
   presets: {
     heading: 'Hello World',
     description: 'Welcome to our store.',
+  },
 });
+```
 
 ### Key Rules
 
@@ -96,11 +104,13 @@ export let schema = createSchema({
 - **`forwardRef` is optional** in React 19. If using React 18, wrap with `forwardRef` and attach `ref` to root element.
 - **`type` must be unique** across all components, use kebab-case (e.g., `hero-banner`).
 
+---
 
 ## 3. Component Registration
 
 Components must be registered in `app/weaverse/components.ts`:
 
+```tsx
 import type { HydrogenComponent } from '@weaverse/hydrogen';
 
 // MUST use namespace imports (import * as X), NOT default imports
@@ -113,39 +123,61 @@ export let components: HydrogenComponent[] = [
   FeaturedCollection,
   ProductCard,
 ];
+```
 
 **Common mistake:** Using `import HeroBanner from ...` — this won't work. Always `import * as HeroBanner from ...`.
 
+---
 
 ## 4. Schema with `createSchema()`
 
+```tsx
+import { createSchema } from '@weaverse/hydrogen';
 
+export let schema = createSchema({
   type: 'my-component',          // Unique kebab-case identifier
   title: 'My Component',         // Display name in Studio
   limit: 1,                      // Max instances per page (optional)
   enabledOn: {                   // Page type restrictions (optional)
     pages: ['PRODUCT', 'COLLECTION'],
+  },
   settings: [                    // Editor UI groups
+    {
+      group: 'Content',
+      inputs: [
         { type: 'text', name: 'heading', label: 'Heading', defaultValue: 'Title' },
         { type: 'richtext', name: 'body', label: 'Body' },
         { type: 'image', name: 'image', label: 'Image' },
+        {
           type: 'select', name: 'layout', label: 'Layout',
           configs: {
             options: [
               { value: 'grid', label: 'Grid' },
               { value: 'list', label: 'List' },
+            ],
+          },
           defaultValue: 'grid',
+        },
+      ],
+    },
+  ],
   childTypes: ['product-card', 'button'],  // Allowed child component types
   presets: {                     // Defaults when component is added to page
     heading: 'Title',
     layout: 'grid',
     children: [
       { type: 'product-card' },
+      { type: 'product-card' },
+    ],
+  },
+});
+```
 
 **`inspector` is deprecated** — always use `settings`.
 
 **Page types for `enabledOn`:** `INDEX`, `PRODUCT`, `ALL_PRODUCTS`, `COLLECTION`, `COLLECTION_LIST`, `PAGE`, `BLOG`, `ARTICLE`, `CUSTOM`
 
+---
 
 ## 5. Input Types (Quick Reference)
 
@@ -174,9 +206,11 @@ export let components: HydrogenComponent[] = [
 
 → Full details: [references/04-input-settings.md](references/04-input-settings.md)
 
+---
 
 ## 6. Data Fetching
 
+```tsx
 import type { ComponentLoaderArgs, HydrogenComponentProps } from '@weaverse/hydrogen';
 
 type MyData = { collectionHandle: string };
@@ -185,6 +219,7 @@ export let loader = async ({ weaverse, data }: ComponentLoaderArgs<MyData>) => {
   let { storefront } = weaverse;
   return await storefront.query(COLLECTION_QUERY, {
     variables: { handle: data.collectionHandle },
+  });
 };
 
 // Derive props type from loader return
@@ -193,7 +228,9 @@ type Props = HydrogenComponentProps<Awaited<ReturnType<typeof loader>>> & MyData
 function MyComponent({ loaderData, ...rest }: Props) {
   let collection = loaderData?.collection;
   return <section {...rest}>{collection?.title}</section>;
+}
 export default MyComponent;
+```
 
 **Key patterns:**
 - `weaverse.storefront.query()` — Shopify Storefront API
@@ -203,6 +240,7 @@ export default MyComponent;
 
 → Full details: [references/05-data-fetching.md](references/05-data-fetching.md)
 
+---
 
 ## 7. Styling & Theming
 
@@ -210,30 +248,41 @@ export default MyComponent;
 
 **Global theme settings** are defined in `app/weaverse/schema.server.ts` and applied via CSS variables:
 
+```tsx
 // app/components/GlobalStyle.tsx
 import { useThemeSettings } from '@weaverse/hydrogen';
 
 export function GlobalStyle() {
   let settings = useThemeSettings();
   if (!settings) return null;
+  return (
     <style dangerouslySetInnerHTML={{ __html: `
       :root {
         --color-primary: ${settings.colorPrimary};
         --body-base-size: ${settings.bodyBaseSize}px;
         --heading-base-size: ${settings.headingBaseSize}px;
+      }
     `}} />
+  );
+}
+```
 
 **CVA (Class Variance Authority)** for component variants:
 
+```tsx
 import { cva } from 'class-variance-authority';
 let buttonVariants = cva('inline-flex items-center rounded font-medium', {
   variants: {
     variant: { primary: 'bg-blue-600 text-white', secondary: 'bg-gray-200' },
     size: { sm: 'h-8 px-3 text-sm', md: 'h-10 px-4', lg: 'h-12 px-6' },
+  },
   defaultVariants: { variant: 'primary', size: 'md' },
+});
+```
 
 → Full details: [references/06-styling-theming.md](references/06-styling-theming.md)
 
+---
 
 ## 8. Weaverse API (Key Hooks & Utilities)
 
@@ -253,9 +302,11 @@ let buttonVariants = cva('inline-flex items-center rounded font-medium', {
 
 → Full details: [references/10-weaverse-api.md](references/10-weaverse-api.md)
 
+---
 
 ## 9. Server Setup (server.ts)
 
+```tsx
 import { WeaverseClient } from '@weaverse/hydrogen';
 import { components } from '~/weaverse/components';
 import { themeSchema } from '~/weaverse/schema.server';
@@ -265,33 +316,47 @@ export async function createAppLoadContext(request, env, executionContext) {
   return {
     ...hydrogenContext,
     weaverse: new WeaverseClient({
+      ...hydrogenContext,
       request,
       cache,
       themeSchema,
       components,
     }),
+  };
+}
+```
 
+---
 
 ## 10. Route Integration
 
+```tsx
 // app/routes/($locale)._index.tsx
 import { WeaverseHydrogenRoot } from '@weaverse/hydrogen';
 
 export async function loader({ context }: LoaderFunctionArgs) {
   let weaverseData = await context.weaverse.loadPage({ type: 'INDEX' });
   return { weaverseData };
+}
 
 export default function Homepage() {
   return <WeaverseHydrogenRoot />;
+}
+```
 
 For product pages:
 
+```tsx
 export async function loader({ context, params }: LoaderFunctionArgs) {
   let weaverseData = await context.weaverse.loadPage({
     type: 'PRODUCT',
     handle: params.productHandle,
+  });
   return { weaverseData, /* other data */ };
+}
+```
 
+---
 
 ## Reference Index
 
@@ -321,163 +386,3 @@ For detailed information on specific topics, read these reference files:
 | [examples/featured-collection.tsx](examples/featured-collection.tsx) | Section with loader, Storefront API query |
 | [examples/product-card.tsx](examples/product-card.tsx) | Child component example |
 | [examples/components-registry.ts](examples/components-registry.ts) | Registration pattern |
-# Weaverse Hydrogen
-
-Weaverse is a visual CMS and page builder for Shopify Hydrogen storefronts. It lets merchants customize sections, components, and content visually — while developers define schemas in code.
-
-> **Full reference:** This skill extends [github.com/Weaverse/skills](https://github.com/Weaverse/skills). Load that skill for the complete Weaverse knowledge base.
-
----
-
-## How Weaverse Works
-
-1. **Developer** defines components with a schema (inputs, settings, layout options)
-2. **Merchant** customizes content visually in the Weaverse Studio
-3. **Hydrogen** renders the component with Weaverse-provided data at runtime
-
----
-
-## Component Anatomy
-
-Every Weaverse section component requires 3 exports:
-
-```tsx
-// app/sections/hero-banner.tsx
-
-import type {HydrogenComponentSchema} from '@weaverse/hydrogen'
-import {forwardRef} from 'react'
-
-// 1. Component — the React component
-let HeroBanner = forwardRef<HTMLElement, HeroBannerProps>((props, ref) => {
-  let {heading, subheading, children, ...rest} = props
-  return (
-    <section ref={ref} {...rest}>
-      <h1>{heading}</h1>
-      <p>{subheading}</p>
-      {children}
-    </section>
-  )
-})
-
-// 2. Schema — defines settings visible in Weaverse Studio
-export let schema: HydrogenComponentSchema = {
-  type: 'hero-banner',
-  title: 'Hero Banner',
-  toolbar: ['general-settings'],
-  inspector: [
-    {
-      group: 'Content',
-      inputs: [
-        {type: 'text', name: 'heading', label: 'Heading', defaultValue: 'Welcome'},
-        {type: 'textarea', name: 'subheading', label: 'Subheading'},
-      ],
-    },
-  ],
-}
-
-// 3. Default export
-export default HeroBanner
-```
-
----
-
-## Schema Input Types
-
-| Type | Use case |
-|------|----------|
-| `text` | Short single-line text |
-| `textarea` | Multi-line text |
-| `richtext` | HTML rich text editor |
-| `image` | Image picker (returns Shopify image URL) |
-| `video` | Video picker |
-| `color` | Color picker (hex) |
-| `range` | Numeric slider |
-| `select` | Dropdown with options |
-| `toggle` | Boolean on/off |
-| `radio` | Radio button group |
-| `product` | Shopify product picker |
-| `collection` | Shopify collection picker |
-| `metaobject` | Shopify metaobject picker |
-| `url` | URL input |
-| `position` | Focal point for images |
-
----
-
-## Data Fetching with Loaders
-
-Use `componentLoader` for server-side data fetching in Weaverse components:
-
-```tsx
-import type {ComponentLoaderArgs} from '@weaverse/hydrogen'
-
-export let loader = async ({weaverse}: ComponentLoaderArgs) => {
-  let {storefront} = weaverse
-  let {collection} = await storefront.query(FEATURED_COLLECTION_QUERY, {
-    variables: {handle: 'frontpage'},
-  })
-  return {collection}
-}
-
-// Access in component via useLoaderData equivalent:
-let FeaturedCollection = forwardRef<HTMLElement, FeaturedCollectionProps>((props, ref) => {
-  let {loaderData, ...rest} = props
-  let {collection} = loaderData
-  // ...
-})
-```
-
----
-
-## Component Registration
-
-All components must be registered in `app/weaverse/components.ts`:
-
-```ts
-import type {HydrogenComponent} from '@weaverse/hydrogen'
-
-// Import all section components
-import * as HeroBanner from '~/sections/hero-banner'
-import * as FeaturedCollection from '~/sections/featured-collection'
-import * as ImageWithText from '~/sections/image-with-text'
-
-export let components: HydrogenComponent[] = [
-  HeroBanner,
-  FeaturedCollection,
-  ImageWithText,
-]
-```
-
----
-
-## Route Integration
-
-Add `<WeaverseContent />` to any route where you want Weaverse to control the content:
-
-```tsx
-// app/routes/_index.tsx
-import {json} from '@shopify/remix-oxygen'
-import {useLoaderData} from '@remix-run/react'
-import {WeaverseContent} from '~/weaverse'
-import type {LoaderFunctionArgs} from '@shopify/remix-oxygen'
-
-export async function loader({context}: LoaderFunctionArgs) {
-  return json({
-    weaverseData: await context.weaverse.loadPage({type: 'INDEX'}),
-  })
-}
-
-export default function Index() {
-  let {weaverseData} = useLoaderData<typeof loader>()
-  return <WeaverseContent {...weaverseData} />
-}
-```
-
----
-
-## References
-
-See [github.com/Weaverse/skills](https://github.com/Weaverse/skills) for the full reference, including:
-- All schema input types with examples
-- Styling and theming with Tailwind/CVA
-- Weaverse hooks and utilities
-- Migration guides

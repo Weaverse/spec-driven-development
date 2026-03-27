@@ -24,6 +24,7 @@ templates/pilot/
 │   │   ├── style.tsx       # GlobalStyle component (CSS variables)
 │   │   └── index.tsx       # WeaverseContent wrapper
 │   └── routes/             # Standard Hydrogen routes
+```
 
 ## Reusable Base Components
 
@@ -73,6 +74,8 @@ export let Section = forwardRef<HTMLElement, SectionProps>((props, ref) => {
         maxWidth,
         gap: gap ? `${gap}px` : undefined,
         borderRadius: borderRadius ? `${borderRadius}px` : undefined,
+        backgroundColor,
+        overflow,
         paddingTop: verticalPadding !== 'none' ? `var(--padding-${verticalPadding})` : undefined,
         paddingBottom: verticalPadding !== 'none' ? `var(--padding-${verticalPadding})` : undefined,
       }}
@@ -81,9 +84,11 @@ export let Section = forwardRef<HTMLElement, SectionProps>((props, ref) => {
     </Tag>
   );
 });
+```
 
 ### Shared Layout Inputs
 
+```tsx
 // Reusable schema inputs for section layout
 export let layoutInputs = [
   {
@@ -98,22 +103,34 @@ export let layoutInputs = [
       ],
     },
     defaultValue: 'fixed',
+  },
+  {
     type: 'range' as const,
     name: 'gap',
     label: 'Items spacing',
     configs: { min: 0, max: 60, step: 4, unit: 'px' },
     defaultValue: 20,
+  },
+  {
+    type: 'select' as const,
     name: 'verticalPadding',
     label: 'Vertical padding',
+    configs: {
+      options: [
         { value: 'none', label: 'None' },
         { value: 'small', label: 'Small' },
         { value: 'medium', label: 'Medium' },
         { value: 'large', label: 'Large' },
+      ],
+    },
     defaultValue: 'medium',
+  },
 ];
+```
 
 ### Heading Component
 
+```tsx
 // app/components/heading.tsx
 export interface HeadingProps {
   content: string;
@@ -127,26 +144,43 @@ export interface HeadingProps {
   alignment?: 'left' | 'center' | 'right';
   minSize?: number;
   maxSize?: number;
+}
 
 export let headingInputs = [
   { type: 'text' as const, name: 'content', label: 'Content', defaultValue: 'Heading' },
+  {
     type: 'select' as const, name: 'as', label: 'HTML tag',
+    configs: {
+      options: [
         { value: 'h1', label: 'H1' },
         { value: 'h2', label: 'H2' },
         { value: 'h3', label: 'H3' },
         { value: 'h4', label: 'H4' },
+      ],
+    },
     defaultValue: 'h2',
+  },
+  {
     type: 'select' as const, name: 'alignment', label: 'Alignment',
+    configs: {
+      options: [
         { value: 'left', label: 'Left' },
         { value: 'center', label: 'Center' },
         { value: 'right', label: 'Right' },
+      ],
+    },
     defaultValue: 'center',
+  },
+];
+```
 
 ## Section Patterns
 
 ### Content Section (no data fetching)
 
+```tsx
 // app/sections/image-with-text/index.tsx
+import { forwardRef } from 'react';
 import { createSchema } from '@weaverse/hydrogen';
 import type { HydrogenComponentProps } from '@weaverse/hydrogen';
 import { Image } from '@shopify/hydrogen';
@@ -154,14 +188,19 @@ import { Section, layoutInputs } from '~/components/section';
 
 interface ImageWithTextProps extends HydrogenComponentProps {
   imagePosition: 'left' | 'right';
+}
 
 let ImageWithText = forwardRef<HTMLElement, ImageWithTextProps>((props, ref) => {
   let { imagePosition, children, ...rest } = props;
 
+  return (
     <Section ref={ref} {...rest}>
       <div className={`flex ${imagePosition === 'right' ? 'flex-row-reverse' : ''}`}>
+        {children}
       </div>
     </Section>
+  );
+});
 
 export default ImageWithText;
 
@@ -170,23 +209,42 @@ export let schema = createSchema({
   title: 'Image with Text',
   settings: [
     { group: 'Layout', inputs: layoutInputs },
+    {
       group: 'Content',
       inputs: [
+        {
           type: 'toggle-group',
           name: 'imagePosition',
           label: 'Image position',
+          configs: {
+            options: [
+              { value: 'left', label: 'Left' },
+              { value: 'right', label: 'Right' },
+            ],
+          },
           defaultValue: 'left',
+        },
+      ],
+    },
+  ],
   childTypes: ['heading', 'paragraph', 'image', 'button'],
   presets: {
     children: [
       { type: 'image' },
       { type: 'heading', content: 'About Our Store' },
       { type: 'paragraph', content: 'We create amazing products...' },
+    ],
+  },
+});
+```
 
 ### Data-Driven Section
 
+```tsx
 // app/sections/featured-products/index.tsx
+import { createSchema } from '@weaverse/hydrogen';
 import type { ComponentLoaderArgs, HydrogenComponentProps } from '@weaverse/hydrogen';
+import { Section, layoutInputs } from '~/components/section';
 import { ProductCard } from '~/components/product/product-card';
 import Heading, { headingInputs } from '~/components/heading';
 
@@ -204,6 +262,8 @@ export let loader = async ({ weaverse, data }: ComponentLoaderArgs<LoaderData>) 
       first: 8,
       language: storefront.i18n.language,
       country: storefront.i18n.country,
+    },
+  });
 };
 
 type Props = HydrogenComponentProps<Awaited<ReturnType<typeof loader>>> & LoaderData;
@@ -212,23 +272,43 @@ function FeaturedProducts(props: Props) {
   let { loaderData, children, ...rest } = props;
   let products = loaderData?.collection?.products?.nodes ?? [];
 
+  return (
     <Section {...rest}>
+      {children}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
+      </div>
+    </Section>
+  );
+}
 
 export default FeaturedProducts;
 
+export let schema = createSchema({
   type: 'featured-products',
   title: 'Featured Products',
+  settings: [
+    { group: 'Layout', inputs: layoutInputs },
+    {
+      group: 'Content',
+      inputs: [
+        {
           type: 'collection',
           name: 'collection',
           label: 'Collection',
           shouldRevalidate: true,
+        },
+      ],
+    },
+  ],
   childTypes: ['heading'],
+  presets: {
     gap: 20,
     children: [{ type: 'heading', content: 'Featured Products' }],
+  },
+});
 
 const COLLECTION_QUERY = `#graphql
   query FeaturedCollection($handle: String!, $first: Int!, $language: LanguageCode, $country: CountryCode)
@@ -238,25 +318,41 @@ const COLLECTION_QUERY = `#graphql
       products(first: $first) {
         nodes {
           id
+          title
           handle
           featuredImage { url altText width height }
           priceRange {
             minVariantPrice { amount currencyCode }
+          }
+        }
+      }
+    }
+  }
 ` as const;
+```
 
 ### Page-Restricted Section
 
+```tsx
+export let schema = createSchema({
   type: 'related-products',
   title: 'Related Products',
   limit: 1,
   enabledOn: {
     pages: ['PRODUCT'],  // Only available on product pages
+  },
+  settings: [
+    { group: 'Layout', inputs: layoutInputs },
+  ],
   presets: { gap: 32 },
+});
+```
 
 ## Theme Schema Conventions
 
 Pilot organizes theme settings into logical groups:
 
+```tsx
 // app/weaverse/schema.server.ts
 export let themeSchema: HydrogenThemeSchema = {
   info: {
@@ -265,6 +361,8 @@ export let themeSchema: HydrogenThemeSchema = {
     name: 'Pilot',
     documentationUrl: 'https://docs.weaverse.io',
     supportUrl: 'https://help.weaverse.io',
+  },
+  settings: [
     { group: 'Layout', inputs: [/* pageWidth, navHeight, gridGap */] },
     { group: 'Colors', inputs: [/* background, foreground, primary, secondary */] },
     { group: 'Typography', inputs: [/* bodyFont, headingFont, baseSize */] },
@@ -273,6 +371,9 @@ export let themeSchema: HydrogenThemeSchema = {
     { group: 'Footer', inputs: [/* columns, copyright, social links */] },
     { group: 'Product', inputs: [/* imageRatio, showVendor, showRating */] },
     { group: 'Cart', inputs: [/* cartType (drawer/page), showNotes */] },
+  ],
+};
+```
 
 ## Key Conventions
 

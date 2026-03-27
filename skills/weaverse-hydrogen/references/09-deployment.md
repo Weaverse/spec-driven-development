@@ -40,14 +40,17 @@ export default {
     return handleRequest(request);
   },
 };
+```
 
 ### Oxygen Deployment Commands
 
+```bash
 # Via Shopify CLI
 shopify hydrogen deploy
 
 # With preview URL
 shopify hydrogen deploy --preview
+```
 
 ### Weaverse Studio Connection
 
@@ -70,15 +73,18 @@ COPY . .
 RUN npm run build
 
 FROM node:20-alpine AS production
+WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
+```
 
 ### Fly.io Example
 
+```bash
 # Install Fly CLI
 curl -L https://fly.io/install.sh | sh
 
@@ -93,6 +99,7 @@ fly secrets set SESSION_SECRET="your-secret"
 fly secrets set PUBLIC_STORE_DOMAIN="your-store.myshopify.com"
 fly secrets set PUBLIC_STOREFRONT_API_TOKEN="your-token"
 fly secrets set WEAVERSE_PROJECT_ID="your-project-id"
+```
 
 ### fly.toml
 
@@ -112,17 +119,30 @@ primary_region = "iad"
 
 [env]
   NODE_ENV = "production"
+```
 
 ## Cloudflare Workers
 
+```tsx
 // server.ts for Cloudflare Workers
+import { createRequestHandler } from '@shopify/remix-oxygen';
 
+export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext) {
     const cache = await caches.open('hydrogen');
+    const handleRequest = createRequestHandler({
+      build: remixBuild,
+      mode: process.env.NODE_ENV,
       getLoadContext: () => createAppLoadContext(request, env, ctx),
+    });
+    return handleRequest(request);
+  },
+};
+```
 
 ### wrangler.toml
 
+```toml
 name = "my-hydrogen-store"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
@@ -134,6 +154,7 @@ PUBLIC_STORE_DOMAIN = "your-store.myshopify.com"
 # wrangler secret put SESSION_SECRET
 # wrangler secret put PUBLIC_STOREFRONT_API_TOKEN
 # wrangler secret put WEAVERSE_PROJECT_ID
+```
 
 ## Production Checklist
 
@@ -151,6 +172,7 @@ Before deploying:
 
 ## Build Commands
 
+```bash
 # Development
 npm run dev
 
@@ -165,11 +187,13 @@ npm run typecheck
 
 # Codegen (generate Storefront API types)
 npm run codegen
+```
 
 ## Content Security Policy (CSP)
 
 Weaverse requires specific CSP directives. Use the built-in helper:
 
+```tsx
 // app/weaverse/csp.ts
 import type { AppLoadContext } from '@shopify/remix-oxygen';
 
@@ -182,13 +206,20 @@ export function getWeaverseCsp(request: Request, context: AppLoadContext) {
       'https://*.weaverse.io',
     ],
     imgSrc: [
+      "'self'",
       'https://cdn.shopify.com',
       'https://ucarecdn.com',
+    ],
     frameSrc: [
+      'https://studio.weaverse.io',
+    ],
+  };
 }
+```
 
 Used in `entry.server.tsx`:
 
+```tsx
 import { createContentSecurityPolicy } from '@shopify/hydrogen';
 import { getWeaverseCsp } from '~/weaverse/csp';
 
@@ -197,3 +228,6 @@ const { nonce, header, NonceProvider } = createContentSecurityPolicy({
   shop: {
     checkoutDomain: context.env?.PUBLIC_CHECKOUT_DOMAIN,
     storeDomain: context.env?.PUBLIC_STORE_DOMAIN,
+  },
+});
+```

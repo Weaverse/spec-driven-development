@@ -20,6 +20,7 @@ import type { LoaderFunctionArgs } from '@shopify/remix-oxygen';
 
 ### `react-router.config.ts`
 
+```tsx
 import type { Config } from '@react-router/dev/config';
 
 export default {
@@ -27,9 +28,11 @@ export default {
   buildDirectory: 'dist',
   ssr: true,
 } satisfies Config;
+```
 
 ### TypeScript
 
+```tsx
 // tsconfig.json
 {
   "include": [
@@ -41,17 +44,27 @@ export default {
   "compilerOptions": {
     "rootDirs": [".", "./.react-router/types"]
   }
+}
+```
 
 ### `.gitignore`
 
+```
 .react-router/
+```
 
 ### `env.d.ts`
 
+```tsx
 declare module 'react-router' {
   interface LoaderFunctionArgs {
     context: AppLoadContext;
+  }
   interface ActionFunctionArgs {
+    context: AppLoadContext;
+  }
+}
+```
 
 ## Route File Convention
 
@@ -71,6 +84,7 @@ Routes live in `app/routes/` and follow file-based routing:
 
 ### Homepage
 
+```tsx
 // app/routes/($locale)._index.tsx
 import { WeaverseHydrogenRoot } from '@weaverse/hydrogen';
 import type { LoaderFunctionArgs } from 'react-router';
@@ -78,13 +92,19 @@ import type { LoaderFunctionArgs } from 'react-router';
 export async function loader({ context }: LoaderFunctionArgs) {
   let weaverseData = await context.weaverse.loadPage({ type: 'INDEX' });
   return { weaverseData };
+}
 
 export default function Homepage() {
   return <WeaverseHydrogenRoot />;
+}
+```
 
 ### Product Page
 
+```tsx
 // app/routes/($locale).products.$handle.tsx
+import { WeaverseHydrogenRoot } from '@weaverse/hydrogen';
+import type { LoaderFunctionArgs } from 'react-router';
 
 export async function loader({ context, params }: LoaderFunctionArgs) {
   let { handle } = params;
@@ -101,29 +121,52 @@ export async function loader({ context, params }: LoaderFunctionArgs) {
   let weaverseData = await weaverse.loadPage({
     type: 'PRODUCT',
     handle,
+  });
 
   return { product, weaverseData };
+}
 
 export default function ProductPage() {
+  return <WeaverseHydrogenRoot />;
+}
+```
 
 ### Collection Page
 
+```tsx
 // app/routes/($locale).collections.$handle.tsx
+export async function loader({ context, params }: LoaderFunctionArgs) {
+  let { handle } = params;
   let weaverseData = await context.weaverse.loadPage({
     type: 'COLLECTION',
+    handle,
+  });
+  return { weaverseData };
+}
 
 export default function CollectionPage() {
+  return <WeaverseHydrogenRoot />;
+}
+```
 
 ### Custom Page
 
+```tsx
 // app/routes/($locale).pages.$handle.tsx
+export async function loader({ context, params }: LoaderFunctionArgs) {
+  let weaverseData = await context.weaverse.loadPage({
     type: 'PAGE',
     handle: params.handle,
+  });
+  return { weaverseData };
+}
+```
 
 ## Entry Server
 
 Uses `ServerRouter` instead of `RemixServer`:
 
+```tsx
 // app/entry.server.tsx
 import { ServerRouter } from 'react-router';
 
@@ -144,31 +187,45 @@ export default async function handleRequest(
   return new Response(body, {
     headers: responseHeaders,
     status: responseStatusCode,
+  });
+}
+```
 
 ## Loader Patterns
 
 ### Return data directly (RR7 style)
 
+```tsx
+export async function loader({ context }: LoaderFunctionArgs) {
   let data = await context.weaverse.loadPage({ type: 'INDEX' });
   return { weaverseData: data };  // No json() wrapper needed in RR7
+}
+```
 
 ### Actions
 
+```tsx
 export async function action({ request, context }: ActionFunctionArgs) {
   let formData = await request.formData();
   // Process form data
   return { success: true };
+}
+```
 
 ### Meta
 
+```tsx
 export function meta({ data }: { data: LoaderData }) {
   return [
     { title: data.page?.title || 'My Store' },
     { name: 'description', content: data.page?.description || '' },
   ];
+}
+```
 
 ## Key Hooks
 
+```tsx
 import {
   useLoaderData,    // Access loader data in components
   useActionData,    // Access action return data
@@ -181,3 +238,4 @@ import {
   Form,             // Form with action
   Outlet,           // Render child routes
 } from 'react-router';
+```

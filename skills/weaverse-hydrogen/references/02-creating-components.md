@@ -12,6 +12,7 @@ app/sections/my-section/
 ├── index.tsx                         # Main component + schema + loader
 ├── schema.ts                         # Schema (optional separate file)
 └── loader.ts                         # Loader (optional separate file)
+```
 
 ## Required Exports
 
@@ -47,6 +48,7 @@ function HeroBanner({ heading, subheading, buttonText, buttonLink, children, ...
       {children}
     </section>
   );
+}
 
 export default HeroBanner;
 
@@ -64,12 +66,15 @@ export let schema = createSchema({
         { type: 'url', name: 'buttonLink', label: 'Button Link', defaultValue: '/collections/all' },
       ],
     },
+  ],
   presets: {
     heading: 'Welcome',
     subheading: 'Shop our latest collection',
     buttonText: 'Shop Now',
     buttonLink: '/collections/all',
+  },
 });
+```
 
 ## Critical Rules
 
@@ -77,54 +82,74 @@ export let schema = createSchema({
 
 **Always** spread the remaining props onto the root HTML element. This is how Weaverse Studio attaches event listeners, data attributes, and interaction handlers.
 
+```tsx
 // ✅ CORRECT
 function MySection({ title, ...rest }: Props) {
   return <section {...rest}><h2>{title}</h2></section>;
+}
 
 // ❌ WRONG — Studio interactions will break
 function MySection({ title }: Props) {
   return <section><h2>{title}</h2></section>;
+}
+```
 
 ### 2. Render `{children}` if Using `childTypes`
 
 If your schema defines `childTypes`, you **must** render `{children}` in your component:
 
+```tsx
 function ProductGrid({ heading, children, ...rest }: Props) {
+  return (
     <section {...rest}>
       <h2>{heading}</h2>
       <div className="grid grid-cols-3 gap-4">
         {children}  {/* Child components render here */}
       </div>
+    </section>
+  );
+}
+```
 
 ### 3. Use Namespace Imports for Registration
 
+```tsx
 // ✅ CORRECT — namespace import
 import * as HeroBanner from '~/sections/hero-banner';
 
 // ❌ WRONG — default import
 import HeroBanner from '~/sections/hero-banner';
+```
 
 ### 4. `forwardRef` is Optional (React 19)
 
 In React 19, `forwardRef` is no longer required. Just spread `{...rest}`:
 
+```tsx
 // React 19 — no forwardRef needed
 function MySection(props: MySectionProps) {
   let { heading, ...rest } = props;
   return <section {...rest}><h2>{heading}</h2></section>;
+}
 export default MySection;
 
 // React 18 — use forwardRef
 import { forwardRef } from 'react';
 let MySection = forwardRef<HTMLElement, MySectionProps>((props, ref) => {
+  let { heading, ...rest } = props;
   return <section ref={ref} {...rest}><h2>{heading}</h2></section>;
+});
+export default MySection;
+```
 
 ## Component Registration
 
 After creating a component, register it in `app/weaverse/components.ts`:
 
+```tsx
 import type { HydrogenComponent } from '@weaverse/hydrogen';
 
+import * as HeroBanner from '~/sections/hero-banner';
 import * as FeaturedCollection from '~/sections/featured-collection';
 import * as ProductCard from '~/sections/product-card';
 import * as Testimonials from '~/sections/testimonials';
@@ -135,6 +160,7 @@ export let components: HydrogenComponent[] = [
   ProductCard,
   Testimonials,
 ];
+```
 
 Then restart your dev server: `npm run dev`
 
@@ -142,13 +168,19 @@ Then restart your dev server: `npm run dev`
 
 ### Basic (no loader)
 
+```tsx
+import type { HydrogenComponentProps } from '@weaverse/hydrogen';
 
 interface MyProps extends HydrogenComponentProps {
+  heading: string;
   showButton: boolean;
   gap: number;
+}
+```
 
 ### With Loader
 
+```tsx
 import type { HydrogenComponentProps, ComponentLoaderArgs } from '@weaverse/hydrogen';
 
 type InputData = { collectionHandle: string };
@@ -162,6 +194,8 @@ type Props = HydrogenComponentProps<Awaited<ReturnType<typeof loader>>> & InputD
 
 function MyComponent({ loaderData, collectionHandle, ...rest }: Props) {
   // loaderData is fully typed
+}
+```
 
 ## Section vs. Child Components
 
@@ -175,17 +209,33 @@ function MyComponent({ loaderData, collectionHandle, ...rest }: Props) {
 - Simpler schemas, no `enabledOn` or `limit` needed
 - Receive data from parent context
 
+```tsx
 // Parent section
+export let schema = createSchema({
   type: 'testimonial-section',
   title: 'Testimonials',
   childTypes: ['testimonial-item'],
+  presets: {
     children: [
       { type: 'testimonial-item', quote: 'Great product!', author: 'Jane' },
       { type: 'testimonial-item', quote: 'Love it!', author: 'John' },
+    ],
+  },
   settings: [/* ... */],
+});
 
 // Child component
+export let schema = createSchema({
   type: 'testimonial-item',
   title: 'Testimonial Item',
+  settings: [
+    {
+      group: 'Content',
+      inputs: [
         { type: 'textarea', name: 'quote', label: 'Quote' },
         { type: 'text', name: 'author', label: 'Author' },
+      ],
+    },
+  ],
+});
+```

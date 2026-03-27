@@ -44,15 +44,19 @@ export default defineConfig({
     }),
   ],
 });
+```
 
 ### Step 2: Run the Codemod
 
+```bash
 npx codemod remix/2/react-router/upgrade
+```
 
 This updates imports and component usage automatically.
 
 ### Step 3: Create react-router.config.ts
 
+```tsx
 // react-router.config.ts
 import type { Config } from '@react-router/dev/config';
 
@@ -61,9 +65,11 @@ export default {
   buildDirectory: 'dist',
   ssr: true,
 } satisfies Config;
+```
 
 ### Step 4: Update vite.config.ts
 
+```tsx
 import tailwindcss from '@tailwindcss/vite';
 import { hydrogen } from '@shopify/hydrogen/vite';
 import { oxygen } from '@shopify/mini-oxygen/vite';
@@ -71,31 +77,42 @@ import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vite';
 
+export default defineConfig({
+  plugins: [
     tailwindcss(),
     hydrogen(),
     oxygen(),
     reactRouter(),
     tsconfigPaths(),
+  ],
+});
+```
 
 ### Step 5: Update Dependencies
 
+```bash
 npm install --force \
   @weaverse/hydrogen@5.0.0 \
   @shopify/hydrogen@2025.5.0 \
   @shopify/remix-oxygen@3.0.0 \
   @shopify/cli@3.80.4
+```
 
 ### Step 6: Update Imports
 
 **Before (Remix):**
+```tsx
 import { useLoaderData, useNavigate, Link } from '@remix-run/react';
 import type { LoaderFunctionArgs, ActionFunctionArgs } from '@shopify/remix-oxygen';
 import { json, redirect } from '@shopify/remix-oxygen';
+```
 
 **After (React Router v7):**
+```tsx
 import { useLoaderData, useNavigate, Link } from 'react-router';
 import type { LoaderFunctionArgs, ActionFunctionArgs } from 'react-router';
 import { data, redirect } from 'react-router';
+```
 
 **Key import changes:**
 
@@ -108,17 +125,23 @@ import { data, redirect } from 'react-router';
 
 ### Step 7: Update entry.server.tsx
 
+```tsx
 // Before
 import { RemixServer } from '@remix-run/react';
 
 // After
 import { ServerRouter } from 'react-router';
+```
 
 In the render:
 
+```tsx
+// Before
 <RemixServer context={routerContext} url={request.url} />
 
+// After
 <ServerRouter context={routerContext} url={request.url} nonce={nonce} />
+```
 
 ### Step 8: Update TypeScript Config
 
@@ -130,35 +153,52 @@ In the render:
     "./**/*.ts",
     "./**/*.tsx",
     ".react-router/types/**/*"
+  ],
   "compilerOptions": {
     "rootDirs": [".", "./.react-router/types"]
   }
+}
+```
 
 **env.d.ts:**
+```tsx
 declare module 'react-router' {
   interface LoaderFunctionArgs {
     context: AppLoadContext;
+  }
   interface ActionFunctionArgs {
+    context: AppLoadContext;
+  }
+}
+```
 
 ### Step 9: Update .gitignore
 
 ```gitignore
 # React Router
 .react-router/
+```
 
 ### Step 10: json() → data() or Plain Return
 
+```tsx
 // Before (Remix)
 import { json } from '@shopify/remix-oxygen';
 export async function loader({ context }: LoaderFunctionArgs) {
   return json({ products });
+}
 
 // After (React Router v7) — Option A: data()
 import { data } from 'react-router';
+export async function loader({ context }: LoaderFunctionArgs) {
   return data({ products });
+}
 
 // After (React Router v7) — Option B: Plain return (simpler)
+export async function loader({ context }: LoaderFunctionArgs) {
   return { products };
+}
+```
 
 ## Weaverse-Specific Changes
 

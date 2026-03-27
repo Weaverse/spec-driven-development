@@ -21,6 +21,7 @@ Data connectors let merchants bind dynamic data (product titles, prices, etc.) t
 {{routes/product.product.priceRange.minVariantPrice.amount}}  → Price
 {{routes/collection.collection.title}}          → Collection title
 {{current.product.description}}                 → Current page product
+```
 
 ### Data Source Patterns
 
@@ -46,9 +47,11 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
   return { product, reviews };
 }
 // Merchants can now bind {{routes/product.reviews.average}}
+```
 
 ### Using in Schema Defaults
 
+```tsx
 export let schema = createSchema({
   type: 'product-info',
   title: 'Product Info',
@@ -56,16 +59,23 @@ export let schema = createSchema({
     {
       group: 'Content',
       inputs: [
+        {
           type: 'text',
           name: 'title',
           label: 'Title',
           defaultValue: '{{routes/product.product.title}}',
         },
+        {
+          type: 'text',
           name: 'price',
           label: 'Price',
           defaultValue: '${{routes/product.product.priceRange.minVariantPrice.amount}}',
+        },
       ],
+    },
+  ],
 });
+```
 
 ---
 
@@ -75,6 +85,7 @@ Weaverse supports multi-locale storefronts via Shopify Markets.
 
 ### Locale in loadPage()
 
+```tsx
 // Route loader
 export async function loader({ context, params }: LoaderFunctionArgs) {
   let locale = params.locale ? `${params.locale.toLowerCase()}` : 'en-us';
@@ -83,8 +94,11 @@ export async function loader({ context, params }: LoaderFunctionArgs) {
     type: 'PRODUCT',
     handle: params.handle,
     locale,  // e.g., 'sv-se', 'fr-ca'
+  });
 
   return { weaverseData };
+}
+```
 
 ### Locale Format
 
@@ -99,12 +113,15 @@ If the specified locale doesn't have content configured in Weaverse Studio, it f
 
 ### Route Structure
 
+```
 app/routes/
 ├── ($locale)._index.tsx              # Homepage
 ├── ($locale).products.$handle.tsx     # Product page
 ├── ($locale).collections.$handle.tsx  # Collection page
 └── ($locale).pages.$handle.tsx        # Custom page
+```
 
+---
 
 ## Custom Routing
 
@@ -112,27 +129,46 @@ Create custom URL structures mapped to Weaverse page types.
 
 ### Custom Page Type
 
+```tsx
 // app/routes/($locale).custom.$slug.tsx
+export async function loader({ context, params }: LoaderFunctionArgs) {
+  let weaverseData = await context.weaverse.loadPage({
     type: 'CUSTOM',
     handle: params.slug,
+  });
 
+  return { weaverseData };
+}
 
 export default function CustomPage() {
   return <WeaverseHydrogenRoot />;
+}
+```
 
 ### Multiple Templates per Type
 
 Different products can use different templates:
 
+```tsx
+// app/routes/($locale).products.$handle.tsx
+export async function loader({ context, params }: LoaderFunctionArgs) {
   let { product } = await context.storefront.query(PRODUCT_QUERY, {
     variables: { handle: params.handle },
+  });
 
   // Load Weaverse data — Weaverse Studio handles template assignment
+  let weaverseData = await context.weaverse.loadPage({
+    type: 'PRODUCT',
+    handle: params.handle,
+  });
 
   return { product, weaverseData };
+}
+```
 
 In Weaverse Studio, merchants assign templates to specific products/collections.
 
+---
 
 ## Custom Templates
 
@@ -145,6 +181,7 @@ Weaverse supports multiple templates per page type:
 
 This is similar to Shopify Liquid's template system but built for Hydrogen.
 
+---
 
 ## Global Sections
 
@@ -168,6 +205,7 @@ Reusable content blocks that appear across multiple pages.
 
 No special code needed — global sections use the same component system. Changes to a global section automatically propagate to all pages using it.
 
+---
 
 ## Content Security Policy (CSP)
 
@@ -175,6 +213,7 @@ Weaverse Studio requires specific CSP directives for the live preview to work.
 
 ### CSP Helper
 
+```tsx
 // app/weaverse/csp.ts
 export function getWeaverseCsp(request: Request, context: AppLoadContext) {
   return {
@@ -183,16 +222,26 @@ export function getWeaverseCsp(request: Request, context: AppLoadContext) {
       'https://weaverse.io',
       'https://studio.weaverse.io',
       'https://*.weaverse.io',
+    ],
     imgSrc: [
+      "'self'",
       'https://cdn.shopify.com',
       'https://ucarecdn.com',
+    ],
     frameSrc: [
+      'https://studio.weaverse.io',
+    ],
     scriptSrc: [
+      "'self'",
       'https://cdn.weaverse.io',
+    ],
   };
+}
+```
 
 ### Integration in entry.server.tsx
 
+```tsx
 import { createContentSecurityPolicy } from '@shopify/hydrogen';
 import { getWeaverseCsp } from '~/weaverse/csp';
 
@@ -201,7 +250,11 @@ const { nonce, header, NonceProvider } = createContentSecurityPolicy({
   shop: {
     checkoutDomain: context.env?.PUBLIC_CHECKOUT_DOMAIN,
     storeDomain: context.env?.PUBLIC_STORE_DOMAIN,
+  },
+});
+```
 
+---
 
 ## Multi-Project Architecture
 
@@ -209,15 +262,21 @@ Use different Weaverse projects for different purposes:
 
 ### Domain-Based Selection
 
+```tsx
 export async function loader({ request, context }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let projectId = url.origin === 'https://store.se'
     ? 'project-sweden'
     : 'project-default';
 
+  let weaverseData = await context.weaverse.loadPage({
     type: 'INDEX',
     projectId,
+  });
 
+  return { weaverseData };
+}
+```
 
 ### Use Cases
 
@@ -227,23 +286,30 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
 See [Multi-Project Architecture Guide](https://docs.weaverse.io/guides/multi-project-architecture) for full details.
 
+---
 
 ## Third-Party Integration
 
 ### Judge.me Reviews
 
+```tsx
 export let loader = async ({ weaverse, data }: ComponentLoaderArgs) => {
   let { fetchWithCache, env } = weaverse;
 
   return await fetchWithCache(
     `https://judge.me/api/v1/reviews?shop_domain=${env.PUBLIC_STORE_DOMAIN}`,
+    {
       headers: { 'Authorization': `Bearer ${env.JUDGEME_PRIVATE_API_TOKEN}` },
+    }
   );
+};
+```
 
 ### Google GTM
 
 Add to your root layout:
 
+```tsx
 function Layout({ children }: { children: React.ReactNode }) {
   let { publicGoogleGtmId } = useThemeSettings();
 
@@ -260,12 +326,20 @@ function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>{children}</body>
     </html>
+  );
+}
+```
 
 ### Shopify Inbox
 
 Add the Shopify Inbox chat widget via theme settings and include it in your layout.
 
+```tsx
 // In theme schema (schema.server.ts)
+{
+  type: 'text',
   name: 'shopifyInboxShopId',
   label: 'Shopify Inbox Shop ID',
   helpText: 'Found in Shopify admin → Inbox → Settings',
+}
+```

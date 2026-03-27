@@ -40,16 +40,23 @@ const PRODUCTS_QUERY = `#graphql
           minVariantPrice {
             amount
             currencyCode
+          }
+        }
         featuredImage {
           url
           altText
           width
           height
+        }
+      }
+    }
+  }
 ` as const;
 ```
 
 ### In Weaverse Component Loaders
 
+```tsx
 import type { ComponentLoaderArgs } from '@weaverse/hydrogen';
 
 type LoaderData = { productHandle: string };
@@ -65,22 +72,33 @@ export let loader = async ({ weaverse, data }: ComponentLoaderArgs<LoaderData>) 
       language: storefront.i18n.language,
       country: storefront.i18n.country,
     },
+  });
 };
+```
 
 ### Mutation Pattern
 
+```tsx
 export async function action({ context }: ActionFunctionArgs) {
+  const { storefront } = context;
 
   const result = await storefront.mutate(CREATE_CART_MUTATION, {
+    variables: {
       input: {
         lines: [{ merchandiseId: 'gid://shopify/ProductVariant/123', quantity: 1 }],
+      },
+    },
+  });
 
   return result;
+}
+```
 
 ## Cart
 
 Hydrogen provides built-in cart management:
 
+```tsx
 import { CartForm } from '@shopify/hydrogen';
 
 // Add to cart
@@ -93,38 +111,59 @@ function AddToCartButton({ variantId }: { variantId: string }) {
       <button type="submit">Add to Cart</button>
     </CartForm>
   );
+}
+```
 
 ### Cart Query Fragment
 
 Used in `server.ts` context setup:
 
+```tsx
 const CART_QUERY_FRAGMENT = `#graphql
   fragment CartApiQuery on Cart {
+    id
     totalQuantity
     checkoutUrl
     cost {
       subtotalAmount { amount currencyCode }
       totalAmount { amount currencyCode }
+    }
     lines(first: 100) {
+      nodes {
+        id
         quantity
         merchandise {
           ... on ProductVariant {
+            id
+            title
             image { url altText width height }
             price { amount currencyCode }
             product { title handle }
+          }
+        }
+      }
+    }
+  }
+` as const;
+```
 
 ## Customer Accounts
 
 Hydrogen supports Shopify's Customer Account API:
 
+```tsx
 // Check if customer is logged in
+export async function loader({ context }: LoaderFunctionArgs) {
   const isLoggedIn = await context.customerAccount.isLoggedIn();
 
   if (!isLoggedIn) {
     return redirect('/account/login');
+  }
 
   const { data } = await context.customerAccount.query(CUSTOMER_QUERY);
   return { customer: data.customer };
+}
+```
 
 ## Internationalization (i18n)
 
@@ -132,6 +171,7 @@ Hydrogen supports Shopify's Customer Account API:
 
 Weaverse Hydrogen themes typically use URL prefix-based locale detection:
 
+```tsx
 // server.ts
 function getLocaleFromRequest(request: Request): I18nLocale {
   const url = new URL(request.url);
@@ -142,17 +182,22 @@ function getLocaleFromRequest(request: Request): I18nLocale {
     EN: { language: 'EN', country: 'US' },
     FR: { language: 'FR', country: 'FR' },
     DE: { language: 'DE', country: 'DE' },
+  };
 
   return locales[firstPathPart] ?? { language: 'EN', country: 'US' };
+}
+```
 
 ### Route Structure for i18n
 
+```
 app/routes/
 ├── ($locale)._index.tsx           # Homepage
 ├── ($locale).products.$handle.tsx  # Product page
 ├── ($locale).collections.$handle.tsx  # Collection page
 ├── ($locale).pages.$handle.tsx     # Custom page
 └── ($locale).blogs.$blogHandle.$articleHandle.tsx  # Article
+```
 
 The `($locale)` segment is optional — pages work with and without a locale prefix.
 
@@ -160,13 +205,21 @@ The `($locale)` segment is optional — pages work with and without a locale pre
 
 Always pass language and country to Storefront API queries:
 
+```tsx
 const { product } = await storefront.query(PRODUCT_QUERY, {
+  variables: {
     handle,
+    language: storefront.i18n.language,
+    country: storefront.i18n.country,
+  },
+});
+```
 
 ## Hydrogen Components
 
 ### Image
 
+```tsx
 import { Image } from '@shopify/hydrogen';
 
 <Image
@@ -174,34 +227,44 @@ import { Image } from '@shopify/hydrogen';
   aspectRatio="1/1"
   sizes="(min-width: 45em) 20vw, 50vw"
 />
+```
 
 ### Money
 
+```tsx
 import { Money } from '@shopify/hydrogen';
 
 <Money data={product.priceRange.minVariantPrice} />
+```
 
 ### ShopPayButton
 
+```tsx
 import { ShopPayButton } from '@shopify/hydrogen';
 
 <ShopPayButton
   storeDomain="your-store.myshopify.com"
   variantIds={[selectedVariant.id]}
+/>
+```
 
 ### Analytics
 
+```tsx
 import { Analytics } from '@shopify/hydrogen';
 
 <Analytics.ProductView
   data={{
     products: [{ id: product.id, title: product.title, price: product.price }],
   }}
+/>
+```
 
 ## Caching
 
 Hydrogen provides caching utilities for Storefront API and custom requests:
 
+```tsx
 import { CacheShort, CacheLong, CacheNone, CacheCustom } from '@shopify/hydrogen';
 
 // Short cache (1 second, stale-while-revalidate 9 seconds)
@@ -216,11 +279,14 @@ await storefront.query(QUERY, { cache: CacheNone() });
 // Custom cache
 await storefront.query(QUERY, {
   cache: CacheCustom({ maxAge: 60, staleWhileRevalidate: 600 }),
+});
+```
 
 ## SEO
 
 Hydrogen provides SEO utilities:
 
+```tsx
 import { getSeoMeta } from '@shopify/hydrogen';
 
 export function meta({ data }: MetaArgs) {
@@ -228,6 +294,9 @@ export function meta({ data }: MetaArgs) {
     title: data.product.seo.title ?? data.product.title,
     description: data.product.seo.description ?? data.product.description,
     media: data.product.featuredImage,
+  });
+}
+```
 
 ## Environment Variables
 
@@ -243,3 +312,4 @@ WEAVERSE_PROJECT_ID=your-weaverse-project-id
 PUBLIC_STOREFRONT_ID=your-storefront-id
 PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=your-client-id
 PUBLIC_CHECKOUT_DOMAIN=your-checkout-domain
+```
