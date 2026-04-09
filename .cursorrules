@@ -30,6 +30,7 @@ Use these when you need the latest API references, not the offline references.
 | [shopify-hydrogen](./skills/shopify-hydrogen/SKILL.md) | Core Hydrogen APIs — createHydrogenContext, cart, caching, pagination, SEO, CSP | Working with Hydrogen framework APIs |
 | [hydrogen-cookbooks](./skills/hydrogen-cookbooks/SKILL.md) | Step-by-step guides for building common Hydrogen features | Building specific features |
 | [hydrogen-upgrades](./skills/hydrogen-upgrades/SKILL.md) | Hydrogen version migration guides and upgrade process | Upgrading Hydrogen |
+| [theme-update](./skills/theme-update/SKILL.md) | Pilot theme update — detect version, plan changes, preserve customizations, verify build | Updating a customer's Pilot theme to a newer release |
 
 ## When to Load Which Skill
 
@@ -37,6 +38,7 @@ Use these when you need the latest API references, not the offline references.
 - **Using Hydrogen framework APIs** (cart, caching, SEO, etc.) → load `shopify-hydrogen`
 - **Building a specific feature** (bundles, combined listings, 3D models...) → load `hydrogen-cookbooks`
 - **Upgrading Hydrogen version** → load `hydrogen-upgrades`
+- **Updating a customer's Pilot theme** → load `theme-update`
 
 ## About Shopify Hydrogen
 

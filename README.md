@@ -49,6 +49,8 @@ The `references/` folders remain as offline fallback — they're cached snapshot
 | [`skills/hydrogen-cookbooks/`](#hydrogen-cookbooks) | Step-by-step guides for bundles, combined listings, 3D models, customer accounts, performance, and more |
 | [`skills/hydrogen-upgrades/`](#hydrogen-upgrades) | Breaking changes and migration steps for every Hydrogen version from 2024.4.7 to 2026.1.0 |
 | [`skills/weaverse-hydrogen/`](#weaverse-hydrogen) | Weaverse components, schemas, loaders, theming, Hydrogen fundamentals, deployment |
+| [`skills/theme-update/`](#theme-update) | Pilot theme update — detect version, plan changes, preserve customizations, verify build |
+| [`skills/theme-update/`](#theme-update) | Safely update Pilot theme — detect version, plan changes, preserve customizations, verify build |
 
 ---
 
@@ -104,8 +106,6 @@ skills/hydrogen-upgrades/
     └── upgrade-2025.7.0-to-2026.1.0.md
 ```
 
----
-
 ## weaverse-hydrogen
 
 Everything needed to build a Shopify Hydrogen storefront with Weaverse — with live docs via `scripts/search_weaverse_docs.mjs` and `scripts/get_weaverse_page.mjs`.
@@ -133,6 +133,33 @@ skills/weaverse-hydrogen/
     ├── product-card.tsx
     └── components-registry.ts
 ```
+
+---
+
+## theme-update
+
+Safely update a customer's Weaverse Pilot theme to a newer release — detects the current version, fetches diffs from GitHub, categorizes changes by risk level, preserves customizations, and verifies the build.
+
+```
+skills/theme-update/
+└── SKILL.md                          # Full update procedure (detection → planning → execution → verification)
+
+scripts/
+└── check_pilot_updates.mjs           # Standalone version check script (Node 18+, zero deps)
+```
+
+### Quick check for updates
+
+```bash
+node scripts/check_pilot_updates.mjs
+node scripts/check_pilot_updates.mjs --target v2026.4.7
+```
+
+### When to use this skill
+
+- A customer asks to update their Pilot theme
+- You see `@weaverse/pilot` in `package.json` and need to check for updates
+- A user reports an issue fixed in a newer Pilot release
 
 ---
 

@@ -39,6 +39,10 @@ skills/
   hydrogen-upgrades/               # Version migration guides
     SKILL.md
     references/                    # One file per version jump
+  theme-update/                    # Pilot theme update procedure
+    SKILL.md
+    scripts/
+      check_pilot_updates.mjs      # Version check script
 ```
 
 ## Live Docs Strategy
