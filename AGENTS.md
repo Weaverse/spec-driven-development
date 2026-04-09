@@ -43,6 +43,8 @@ skills/
     SKILL.md
     scripts/
       check_pilot_updates.mjs      # Version check script
+  weaverse-integration/            # Integrate into existing Hydrogen projects
+    SKILL.md                       # Full 6-phase integration guide
 ```
 
 ## Live Docs Strategy

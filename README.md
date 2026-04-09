@@ -25,6 +25,7 @@ For manual per-agent setup, see [INSTALL.md](INSTALL.md).
 | [`hydrogen-cookbooks`](./skills/hydrogen-cookbooks/SKILL.md) | Step-by-step guides — bundles, combined listings, 3D models, customer accounts, performance | Building specific features |
 | [`hydrogen-upgrades`](./skills/hydrogen-upgrades/SKILL.md) | Breaking changes and migration steps for Hydrogen framework versions | Upgrading Hydrogen framework |
 | [`theme-update`](./skills/theme-update/SKILL.md) | Safe Pilot theme updates — detect version, plan changes, preserve customizations, verify build | Updating a customer's Pilot theme |
+| [`weaverse-integration`](./skills/weaverse-integration/SKILL.md) | Integrate Weaverse into an existing Hydrogen project — analyze codebase, convert components, set up SDK, configure routes | Adding Weaverse to a project that doesn't use it yet |
 
 ---
 
@@ -85,6 +86,9 @@ All scripts are **zero-dependency** — Node.js 18+ built-ins only.
 │       ├── SKILL.md
 │       └── scripts/
 │           └── check_pilot_updates.mjs
+│
+│   └── weaverse-integration/     # Integrate into existing Hydrogen
+│       └── SKILL.md
 │
 ├── scripts/                       # Live doc fetching (shared)
 │   ├── search_shopify_docs.mjs
