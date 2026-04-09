@@ -1,6 +1,6 @@
 ---
 name: theme-update
-description: "Safely update a Weaverse Pilot theme to the latest version — detects current version, plans changes, preserves customizations, and verifies the build."
+description: "Safely update a Weaverse Pilot theme to the latest version — detects current version, fetches release diffs, plans changes category-by-category, preserves customizations, verifies build."
 ---
 
 # Theme Update — Weaverse Pilot
@@ -17,8 +17,8 @@ Safely upgrade a Weaverse Pilot theme from its current version to a newer releas
 ## Quick Check
 
 ```bash
-node scripts/check_pilot_updates.mjs
-node scripts/check_pilot_updates.mjs --target v2026.4.7
+node skills/theme-update/scripts/check_pilot_updates.mjs
+node skills/theme-update/scripts/check_pilot_updates.mjs --target v2026.4.7
 ```
 
 ---
