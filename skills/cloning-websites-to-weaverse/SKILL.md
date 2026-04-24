@@ -1,6 +1,6 @@
 ---
 name: cloning-websites-to-weaverse
-description: Use when recreating a reference website or brand hub in this Hydrogen plus Weaverse repo, especially when deciding whether to reuse sections, add global styles, update theme schema, or resolve conflicts between the live site and the Baby Einstein brand guideline.
+description: Use when recreating a reference website or brand hub in this Hydrogen plus Weaverse repo, especially when deciding whether to reuse sections, add global styles, update theme schema, or resolve conflicts between the live site and project brand guidelines.
 ---
 
 # Cloning Websites to Weaverse
@@ -32,7 +32,7 @@ In conflict cases, explicitly state: `I will match the live site where possible,
 
 ## When to Use
 
-- Cloning a marketing page, homepage, or Baby Einstein brand hub into this repo
+- Cloning a marketing page, homepage, or brand hub into this repo
 - Rebuilding a live page in `app/sections/` and Weaverse
 - Deciding between existing sections, new sections, `app/styles/app.css`, and `app/weaverse/schema.server.ts`
 - Mapping a reference site's section system onto this repo's registered Weaverse components
@@ -248,7 +248,7 @@ After generating the preview route, **stop and wait for user confirmation**:
 - For supporting subpages linked from the landing page, use Firecrawl crawl with `--include-paths` to scope the crawl to relevant paths.
 - Capture repeated layouts, navigation patterns, CTA placements, and content hierarchy.
 - Treat the Firecrawl output as the reference-site structure source, not the brand-token source.
-- Save output to `.firecrawl/` directory with descriptive names (e.g., `.firecrawl/kids2-baby-einstein.json`).
+- Save output to `.firecrawl/` directory with descriptive names (e.g., `.firecrawl/example-homepage.json`).
 
 ### Media source extraction
 
