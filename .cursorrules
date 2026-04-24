@@ -31,6 +31,8 @@ Use these when you need the latest API references, not the offline references.
 | [hydrogen-cookbooks](./skills/hydrogen-cookbooks/SKILL.md) | Step-by-step guides for building common Hydrogen features | Building specific features |
 | [hydrogen-upgrades](./skills/hydrogen-upgrades/SKILL.md) | Hydrogen version migration guides and upgrade process | Upgrading Hydrogen |
 | [theme-update](./skills/theme-update/SKILL.md) | Pilot theme update — detect version, plan changes, preserve customizations, verify build | Updating a customer's Pilot theme to a newer release |
+| [cloning-websites-to-weaverse](./skills/cloning-websites-to-weaverse/SKILL.md) | Reference website cloning workflow for Hydrogen + Weaverse | Cloning a site or brand hub into Weaverse |
+| [generating-weaverse-project-json](./skills/generating-weaverse-project-json/SKILL.md) | Weaverse project export JSON generation | Building import-ready Weaverse project files |
 
 ## When to Load Which Skill
 
@@ -39,6 +41,8 @@ Use these when you need the latest API references, not the offline references.
 - **Building a specific feature** (bundles, combined listings, 3D models...) → load `hydrogen-cookbooks`
 - **Upgrading Hydrogen version** → load `hydrogen-upgrades`
 - **Updating a customer's Pilot theme** → load `theme-update`
+- **Cloning a reference website into Weaverse** → load `cloning-websites-to-weaverse`
+- **Generating Weaverse import JSON** → load `generating-weaverse-project-json`
 
 ## About Shopify Hydrogen
 

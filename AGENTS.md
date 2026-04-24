@@ -45,6 +45,12 @@ skills/
       check_pilot_updates.mjs      # Version check script
   weaverse-integration/            # Integrate into existing Hydrogen projects
     SKILL.md                       # Full 6-phase integration guide
+  cloning-websites-to-weaverse/    # Clone reference sites into Weaverse pages
+    SKILL.md
+  generating-weaverse-project-json/ # Generate Weaverse import JSON files
+    SKILL.md
+    references/
+    scripts/
 ```
 
 ## Live Docs Strategy
@@ -74,6 +80,8 @@ All scripts use Node.js built-ins only (no dependencies needed). Require Node.js
 | `weaverse-hydrogen/` | This repo — authored directly · Live: `docs.weaverse.io` via scripts |
 | `hydrogen-cookbooks/` | Authored in this repo with Weaverse-specific patterns |
 | `hydrogen-upgrades/` | Authored in this repo · Cross-check with `shopify.dev` via scripts |
+| `cloning-websites-to-weaverse/` | Authored in this repo with Weaverse-specific migration workflow |
+| `generating-weaverse-project-json/` | Authored in this repo with import schema references and validator |
 
 **Rule:** Never write API docs from memory or training data. Use the scripts to fetch authoritative content.
 

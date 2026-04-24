@@ -1,0 +1,809 @@
+{
+  "version": "1.0.0",
+  "exportedAt": "2026-01-06T04:05:12.974Z",
+  "project": {
+    "name": "Ken dev",
+    "config": {
+      "previewHost": "http://localhost:3456",
+      "theme": {
+        "bio": "<p>We are a team of designers, developers, and creatives who are passionate about creating beautiful and functional products.</p>",
+        "socialX": "https://x.com/i/communities/1636383560197373952",
+        "logoData": "",
+        "colorLine": "#A79D95",
+        "colorText": "#24211E",
+        "copyright": "© 2024 Weaverse. All rights reserved.",
+        "drawersBg": "#ffffff",
+        "logoWidth": 150,
+        "pageWidth": 1280,
+        "footerText": "#F1F1E6",
+        "h1BaseSize": 60,
+        "headerText": "#3C3428",
+        "openMenuBy": "click",
+        "showVendor": true,
+        "starRating": "#fde047",
+        "storeEmail": "contact@my-store.com",
+        "topbarText": "<p>Get the best deals from us</p>",
+        "footerWidth": "fixed",
+        "headerWidth": "fixed",
+        "newTagColor": "#818cf8",
+        "showDetails": true,
+        "soldOutText": "Sold out",
+        "addressTitle": "OUR SHOP",
+        "bodyBaseSize": 16,
+        "colorPrimary": "#2C9B51",
+        "newBadgeText": "New",
+        "saleTagColor": "#dc2626",
+        "scrollingGap": 44,
+        "storeAddress": "301 Front St W, Toronto, ON M5V 2T6, Canada",
+        "topbarHeight": 36,
+        "addToCartText": "Add to cart",
+        "footerBgColor": "#4E4C47",
+        "headerBgColor": "#EBEAE5",
+        "newBadgeColor": "#67785d",
+        "otherTagColor": "#1e293b",
+        "saleBadgeText": "-[percentage]% Off",
+        "showSalePrice": true,
+        "topbarBgColor": "#615E58",
+        "footerLogoData": "",
+        "pcardAlignment": "left",
+        "saleBadgeColor": "#c6512c",
+        "scrollingSpeed": 10,
+        "showThumbnails": true,
+        "socialFacebook": "https://www.facebook.com/weaverse",
+        "socialLinkedIn": "https://www.linkedin.com/company/weaverseio",
+        "bodyBaseSpacing": "-0.0125em",
+        "btnCornerRadius": 4,
+        "bundleBadgeText": "Bundle",
+        "buttonPrimaryBg": "#908379",
+        "colorBackground": "#ffffff",
+        "colorForeground": "#e5e7eb",
+        "colorLineSubtle": "#DBD7D1",
+        "colorTextSubtle": "#524B46",
+        "enableScrolling": false,
+        "footerLogoWidth": 80,
+        "navHeightMobile": 3,
+        "navHeightTablet": 4,
+        "newBadgeDaysOld": 30,
+        "newsletterTitle": "STAY IN TOUCH",
+        "pcardImageRatio": "1/1",
+        "pcardShowVendor": true,
+        "productSwatches": {
+          "options": [
+            {
+              "id": "1",
+              "name": "Color",
+              "size": "md",
+              "type": "color",
+              "shape": "circle",
+              "displayName": "Select color"
+            },
+            {
+              "id": "2",
+              "name": "Size",
+              "size": "md",
+              "type": "button",
+              "shape": "round",
+              "displayName": "Select size"
+            }
+          ],
+          "swatches": {
+            "colors": [
+              {
+                "id": "1",
+                "name": "Red",
+                "value": "#ff0000"
+              },
+              {
+                "id": "2",
+                "name": "Yellow",
+                "value": "#ffff00"
+              },
+              {
+                "id": "3",
+                "name": "Black",
+                "value": "#000000"
+              },
+              {
+                "id": "4",
+                "name": "Blue",
+                "value": "#0000FF"
+              },
+              {
+                "id": "5",
+                "name": "Green",
+                "value": "#00ff00"
+              },
+              {
+                "id": "6",
+                "name": "Purple",
+                "value": "#800080"
+              },
+              {
+                "id": "7",
+                "name": "Silver",
+                "value": "#c0c0c0"
+              },
+              {
+                "id": "8",
+                "name": "White",
+                "value": "#ffffff"
+              },
+              {
+                "id": "9",
+                "name": "Brown",
+                "value": "#7B3F00"
+              },
+              {
+                "id": "10",
+                "name": "Light-brown",
+                "value": "#feb035"
+              },
+              {
+                "id": "11",
+                "name": "Dark-turquoise",
+                "value": "#23cddc"
+              },
+              {
+                "id": "12",
+                "name": "Orange",
+                "value": "#fe9001"
+              },
+              {
+                "id": "13",
+                "name": "Tan",
+                "value": "#eacea7"
+              },
+              {
+                "id": "14",
+                "name": "Violet",
+                "value": "#EE82EE"
+              },
+              {
+                "id": "15",
+                "name": "Pink",
+                "value": "#FFC0CB"
+              },
+              {
+                "id": "16",
+                "name": "Grey",
+                "value": "#808080"
+              }
+            ],
+            "images": [
+              {
+                "id": "1",
+                "name": "Dark blue",
+                "value": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/swatch_pattern_2.png"
+              },
+              {
+                "id": "2",
+                "name": "Light orange",
+                "value": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/swatch_pattern_3.png"
+              },
+              {
+                "id": "3",
+                "name": "Dark red",
+                "value": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/swatch_pattern_4.png"
+              },
+              {
+                "id": "4",
+                "name": "Light brown",
+                "value": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/swatch_pattern_5.png"
+              },
+              {
+                "id": "5",
+                "name": "Dark brown",
+                "value": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/swatch_pattern_6.png"
+              }
+            ]
+          }
+        },
+        "socialInstagram": "https://www.instagram.com/",
+        "topbarTextColor": "#F1EAE5",
+        "unavailableText": "Unavailable",
+        "bundleBadgeColor": "#10804c",
+        "colorTextInverse": "#fff",
+        "navHeightDesktop": 6,
+        "pcardShowReviews": false,
+        "shopSupportEmail": "support@soldertraining.com",
+        "showRefundPolicy": true,
+        "soldOutBadgeText": "Sold out",
+        "badgeBorderRadius": 0,
+        "buttonSecondaryBg": "#F0EFED",
+        "pcardBorderRadius": 0,
+        "pcardOptionToShow": "Color",
+        "pcardShowNewBadge": true,
+        "soldOutBadgeColor": "#d4d4d4",
+        "badgeTextTransform": "Uppercase",
+        "bodyBaseLineHeight": 1.5,
+        "buttonPrimaryColor": "#F1EEEA",
+        "headingBaseSpacing": "-0.025em",
+        "pcardShowSaleBadge": true,
+        "pcardShowSalePrice": true,
+        "showShippingPolicy": true,
+        "topbarScrollingGap": 100,
+        "bestSellerBadgeText": "Best Seller",
+        "productReviewsColor": "#108474",
+        "transparentLogoData": {
+          "id": "gid://shopify/MediaImage/34144817938616",
+          "url": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/transparent_Pilot_logo.png?v=1718763594",
+          "width": 320,
+          "height": 116,
+          "altText": "Logo"
+        },
+        "bestSellerBadgeColor": "#000000",
+        "buttonSecondaryColor": "#24211E",
+        "enableViewTransition": true,
+        "newsletterButtonText": "Send",
+        "newsletterPopupDelay": 5,
+        "newsletterPopupImage": "",
+        "pcardBackgroundColor": "",
+        "pcardEnableQuickShop": true,
+        "pcardMaxOptionValues": 5,
+        "pcardShowBundleBadge": true,
+        "pcardShowLowestPrice": true,
+        "topbarScrollingSpeed": 1,
+        "comparePriceTextColor": "#84807B",
+        "headingBaseLineHeight": 1.2,
+        "newsletterDescription": "News and inspiration in your inbox, every week.",
+        "newsletterPlaceholder": "Please enter your email",
+        "pcardShowImageOnHover": true,
+        "pcardShowOptionValues": true,
+        "popularSearchKeywords": "sunglasses, hats, jackets, shoes",
+        "soldOutAndUnavailable": "#d4d4d4",
+        "transparentHeaderText": "#ffffff",
+        "newsletterPopupEnabled": true,
+        "newsletterPopupHeading": "Stay in the loop!",
+        "revealElementsOnScroll": true,
+        "enableTransparentHeader": false,
+        "newsletterPopupHomeOnly": true,
+        "newsletterPopupPosition": "center",
+        "pcardQuickShopPanelType": "modal",
+        "pcardQuickShopButtonText": "Select options",
+        "pcardQuickShopButtonType": "text",
+        "pcardShowBestSellerBadge": true,
+        "pcardShowOutOfStockBadge": false,
+        "newsletterPopupButtonText": "Get 15% Off Your First Order",
+        "pcardShowQuickShopOnHover": true,
+        "pcardTitlePricesAlignment": "vertical",
+        "buttonOutlineTextAndBorder": "#524B46",
+        "newsletterPopupDescription": "Subscribe to our newsletter and get exclusive offers, new product updates, and more.",
+        "newsletterPopupAllowDismiss": false,
+        "newsletterPopupImagePosition": "left",
+        "pcardQuickShopButtonPlacement": "bottom"
+      },
+      "defaultLocale": {
+        "label": "United States (USD $)",
+        "country": "US",
+        "currency": "USD",
+        "language": "EN",
+        "pathPrefix": ""
+      },
+      "recentColors": [
+        "#FCFCFC",
+        "#afafaf",
+        "#F1EAE5",
+        "#F1F1E6",
+        "#4E4C47",
+        "#EBEAE5"
+      ]
+    }
+  },
+  "pages": [
+    {
+      "id": "b98mnnqmv3tmce7wmw3l7vw4",
+      "name": "Home page",
+      "rootId": "019b917a-f48f-72d4-aee7-3b1eae6b7dca",
+      "items": [
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b1eae6b7dca",
+          "type": "main",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b1f5ca586c1"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b20e0384de1"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2105eb5eb0"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b1f5ca586c1",
+          "type": "hero-image",
+          "data": {
+            "height": "small",
+            "enableOverlay": true,
+            "overlayOpacity": 40,
+            "backgroundImage": {
+              "id": "gid://shopify/MediaImage/36925180281054",
+              "url": "https://cdn.shopify.com/s/files/1/0762/8642/7358/files/cn57881726.avif?v=1759884159",
+              "width": 1500,
+              "height": 2000,
+              "altText": ""
+            },
+            "verticalPadding": "small"
+          },
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b22cd55e21b"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b23da65fbdf"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2443dcb80f"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b25e60b0351"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b22cd55e21b",
+          "type": "subheading",
+          "data": {
+            "color": "#ffffff",
+            "content": "Welcome industry insiders"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b23da65fbdf",
+          "type": "heading",
+          "data": {
+            "as": "h2",
+            "color": "#ffffff",
+            "content": "Pillows that feel like clouds"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2443dcb80f",
+          "type": "paragraph",
+          "data": {
+            "color": "#ffffff",
+            "content": "<p>Wide inventory of furniture with plenty of essentials that no home would be complete without.</p>"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b25e60b0351",
+          "type": "button",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b20e0384de1",
+          "type": "featured-collections",
+          "data": {
+            "gap": 32,
+            "collections": [
+              {
+                "id": 456905851102,
+                "handle": "covers"
+              },
+              {
+                "id": 456905883870,
+                "handle": "shams"
+              },
+              {
+                "id": 456907292894,
+                "handle": "sheets"
+              },
+              {
+                "id": 457027518686,
+                "handle": "pillowcase"
+              }
+            ]
+          },
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b26760edfe3"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b26760edfe3",
+          "type": "heading",
+          "data": {
+            "content": "Shop our collections"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2105eb5eb0",
+          "type": "featured-products",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b27c2c8e32b"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2849709115"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b27c2c8e32b",
+          "type": "heading",
+          "data": {
+            "content": "Featured products"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2849709115",
+          "type": "featured-products-items",
+          "data": {},
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "qa8xa47ou35atbo1ik4w7v6y",
+      "name": "Default product",
+      "rootId": "019b917a-f48f-72d4-aee7-3b296e32e8b2",
+      "items": [
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b296e32e8b2",
+          "type": "main",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2a9565763a"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2b6c88d4d3"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2a9565763a",
+          "type": "main-product",
+          "data": {
+            "mediaLayout": "slider"
+          },
+          "children": [
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2ccea14b84"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2dd7b4654f"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2e2c50d82c"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b2f00999e4a"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b3053c8c310"
+            },
+            {
+              "id": "019b917a-f48f-72d4-aee7-3b318d06bbca"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2ccea14b84",
+          "type": "mp--breadcrumb",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2dd7b4654f",
+          "type": "mp--badges",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2e2c50d82c",
+          "type": "mp--vendor",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2f00999e4a",
+          "type": "mp--title",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b3053c8c310",
+          "type": "mp--summary",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b318d06bbca",
+          "type": "mp--collapsible-details",
+          "data": {},
+          "children": []
+        },
+        {
+          "id": "019b917a-f48f-72d4-aee7-3b2b6c88d4d3",
+          "type": "variant-list",
+          "data": {},
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "tuhg62ybg5vazwwwdbc7xolp",
+      "name": "All products",
+      "rootId": "019b917a-f490-794d-95d0-82a578d7cdfc",
+      "items": [
+        {
+          "id": "019b917a-f490-794d-95d0-82a578d7cdfc",
+          "type": "main",
+          "data": {},
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "fgqvvzkil5x9jdwvz2ync911",
+      "name": "Default collection",
+      "rootId": "019b917a-f490-794d-95d0-82a6d3e6e72a",
+      "items": [
+        {
+          "id": "019b917a-f490-794d-95d0-82a6d3e6e72a",
+          "type": "main",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f490-794d-95d0-82a747c672b3"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f490-794d-95d0-82a747c672b3",
+          "type": "collection-filters",
+          "data": {
+            "filtersPosition": "drawer",
+            "productsPerRowDesktop": "4"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "uejz5479vg02xt28ie9n7c7j",
+      "name": "Collection list",
+      "rootId": "019b917a-f490-794d-95d0-82a84b057d2c",
+      "items": [
+        {
+          "id": "019b917a-f490-794d-95d0-82a84b057d2c",
+          "type": "main",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f490-794d-95d0-82a907fc7f5e"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f490-794d-95d0-82a907fc7f5e",
+          "type": "collection-list",
+          "data": {
+            "gap": 60
+          },
+          "children": [
+            {
+              "id": "019b917a-f490-794d-95d0-82aab8079a40"
+            },
+            {
+              "id": "019b917a-f490-794d-95d0-82ab83cf3bec"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f490-794d-95d0-82aab8079a40",
+          "type": "heading",
+          "data": {
+            "content": "Collections"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f490-794d-95d0-82ab83cf3bec",
+          "type": "collections-items",
+          "data": {
+            "overlayColor": "#000",
+            "enableOverlay": true,
+            "nextButtonText": "Load more ↓",
+            "overlayOpacity": 30,
+            "prevButtonText": "↑ Load previous",
+            "imageAspectRatio": "adapt"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "jumsckfeshhf98bvgqu4o083",
+      "name": "Default regular page",
+      "rootId": "019b917a-f491-7ece-bc71-672bfb22b44f",
+      "items": [
+        {
+          "id": "019b917a-f491-7ece-bc71-672bfb22b44f",
+          "type": "main"
+        }
+      ]
+    },
+    {
+      "id": "s1ieohryb41fehevs2pzvj1q",
+      "name": "Default blog",
+      "rootId": "019b917a-f491-7ece-bc71-672c04790ea9",
+      "items": [
+        {
+          "id": "019b917a-f491-7ece-bc71-672c04790ea9",
+          "type": "main"
+        }
+      ]
+    },
+    {
+      "id": "felawwvzqrpc8t5n4vgvv3yq",
+      "name": "Default article",
+      "rootId": "019b917a-f491-7ece-bc71-672d1cc05a08",
+      "items": [
+        {
+          "id": "019b917a-f491-7ece-bc71-672d1cc05a08",
+          "type": "main",
+          "data": {},
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "sf6ru1fnezyex2sejibxv388",
+      "name": "reseller",
+      "rootId": "019b917a-f491-7ece-bc71-672ee759575d",
+      "items": [
+        {
+          "id": "019b917a-f491-7ece-bc71-672ee759575d",
+          "type": "main",
+          "data": {},
+          "children": [
+            {
+              "id": "019b917a-f491-7ece-bc71-672fb470eab6"
+            },
+            {
+              "id": "019b917a-f491-7ece-bc71-6730415e3c9a"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-672fb470eab6",
+          "type": "countdown",
+          "data": {
+            "width": "stretch",
+            "enableOverlay": true,
+            "overlayOpacity": 40,
+            "backgroundImage": "https://cdn.shopify.com/s/files/1/0838/0052/3057/files/fpo-lifestyle-2-1800x900.svg",
+            "verticalPadding": "large"
+          },
+          "children": [
+            {
+              "id": "019b917a-f491-7ece-bc71-673127268d15"
+            },
+            {
+              "id": "019b917a-f491-7ece-bc71-67326531bea2"
+            },
+            {
+              "id": "019b917a-f491-7ece-bc71-67339fe16b96"
+            },
+            {
+              "id": "019b917a-f491-7ece-bc71-673465db7e62"
+            }
+          ]
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-673127268d15",
+          "type": "heading",
+          "data": {
+            "color": "white",
+            "content": "Sale ends in"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-67326531bea2",
+          "type": "paragraph",
+          "data": {
+            "color": "white",
+            "width": "full",
+            "content": "Use this timer to create urgency and boost sales."
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-67339fe16b96",
+          "type": "countdown--timer",
+          "data": {
+            "textColor": "white"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-673465db7e62",
+          "type": "button",
+          "data": {
+            "variant": "custom",
+            "borderColor": "#fff",
+            "backgroundColor": "#00000000",
+            "borderColorHover": "#fff",
+            "backgroundColorHover": "#fff"
+          },
+          "children": []
+        },
+        {
+          "id": "019b917a-f491-7ece-bc71-6730415e3c9a",
+          "type": "b2b-signup",
+          "data": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "pageAssignments": [
+    {
+      "pageId": "b98mnnqmv3tmce7wmw3l7vw4",
+      "type": "INDEX",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "qa8xa47ou35atbo1ik4w7v6y",
+      "type": "PRODUCT",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "tuhg62ybg5vazwwwdbc7xolp",
+      "type": "ALL_PRODUCTS",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "fgqvvzkil5x9jdwvz2ync911",
+      "type": "COLLECTION",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "uejz5479vg02xt28ie9n7c7j",
+      "type": "COLLECTION_LIST",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "jumsckfeshhf98bvgqu4o083",
+      "type": "PAGE",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "s1ieohryb41fehevs2pzvj1q",
+      "type": "BLOG",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "felawwvzqrpc8t5n4vgvv3yq",
+      "type": "ARTICLE",
+      "handle": "",
+      "locale": "en-us"
+    },
+    {
+      "pageId": "sf6ru1fnezyex2sejibxv388",
+      "type": "CUSTOM",
+      "handle": "reseller",
+      "locale": "en-us"
+    }
+  ]
+}

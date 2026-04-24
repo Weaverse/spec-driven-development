@@ -26,6 +26,8 @@ For manual per-agent setup, see [INSTALL.md](INSTALL.md).
 | [`hydrogen-upgrades`](./skills/hydrogen-upgrades/SKILL.md) | Breaking changes and migration steps for Hydrogen framework versions | Upgrading Hydrogen framework |
 | [`theme-update`](./skills/theme-update/SKILL.md) | Safe Pilot theme updates — detect version, plan changes, preserve customizations, verify build | Updating a customer's Pilot theme |
 | [`weaverse-integration`](./skills/weaverse-integration/SKILL.md) | Integrate Weaverse into an existing Hydrogen project — analyze codebase, convert components, set up SDK, configure routes | Adding Weaverse to a project that doesn't use it yet |
+| [`cloning-websites-to-weaverse`](./skills/cloning-websites-to-weaverse/SKILL.md) | Recreate reference websites as Hydrogen + Weaverse pages with preview checkpoints and section mapping | Cloning a site or brand hub into Weaverse |
+| [`generating-weaverse-project-json`](./skills/generating-weaverse-project-json/SKILL.md) | Generate import-ready Weaverse project export JSON from section plans, specs, or existing exports | Building Weaverse import files |
 
 ---
 
@@ -82,13 +84,21 @@ All scripts are **zero-dependency** — Node.js 18+ built-ins only.
 │   │   ├── SKILL.md
 │   │   └── references/            # 2024.4.7 → … → 2026.1.0
 │   │
-│   └── theme-update/              # Pilot theme updater
+│   ├── theme-update/              # Pilot theme updater
 │       ├── SKILL.md
 │       └── scripts/
 │           └── check_pilot_updates.mjs
 │
-│   └── weaverse-integration/     # Integrate into existing Hydrogen
+│   ├── weaverse-integration/      # Integrate into existing Hydrogen
 │       └── SKILL.md
+│
+│   ├── cloning-websites-to-weaverse/      # Clone sites into Weaverse
+│   │   └── SKILL.md
+│
+│   └── generating-weaverse-project-json/  # Weaverse import JSON generator
+│       ├── SKILL.md
+│       ├── references/
+│       └── scripts/
 │
 ├── scripts/                       # Live doc fetching (shared)
 │   ├── search_shopify_docs.mjs
