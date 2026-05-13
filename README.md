@@ -28,6 +28,7 @@ For manual per-agent setup, see [INSTALL.md](INSTALL.md).
 | [`weaverse-integration`](./skills/weaverse-integration/SKILL.md) | Integrate Weaverse into an existing Hydrogen project — analyze codebase, convert components, set up SDK, configure routes | Adding Weaverse to a project that doesn't use it yet |
 | [`cloning-websites-to-weaverse`](./skills/cloning-websites-to-weaverse/SKILL.md) | Recreate reference websites as Hydrogen + Weaverse pages with preview checkpoints and section mapping | Cloning a site or brand hub into Weaverse |
 | [`generating-weaverse-project-json`](./skills/generating-weaverse-project-json/SKILL.md) | Generate import-ready Weaverse project export JSON from section plans, specs, or existing exports | Building Weaverse import files |
+| [`hydrogen-analytics-tracking`](./skills/hydrogen-analytics-tracking/SKILL.md) | End-to-end tracking on Hydrogen — GTM, GA4 (browser + Measurement Protocol), Meta Pixel + CAPI, Google Ads, Consent Mode v2, CSP, Oxygen FPC, Weaverse webhook forwarding | Implementing analytics/conversion tracking on a Hydrogen storefront |
 
 ---
 
