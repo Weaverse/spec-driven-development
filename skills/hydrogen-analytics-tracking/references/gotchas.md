@@ -144,6 +144,23 @@ GA4 Enhanced Measurement auto-events. `form_start` fires the first time a visito
 
 It's NOT something you push to dataLayer. If you see it appearing around the time of `add_to_cart` failures, **don't conflate them** — `form_start` is fired by GA4 itself when the user clicks into the Shopify checkout's email field; the `add_to_cart` issue is separate.
 
+## "`[shopify-account] <shopify-store> custom element is not registered`"
+
+**Cause:** You loaded only `cdn.shopify.com/storefront/web-components/account.js`. That bundle registers `<shopify-account>` but does NOT synchronously register `<shopify-store>` — it dynamic-imports a chunked `./account/store-*.js` which arrives AFTER `<shopify-account>`'s `connectedCallback` fires. The callback checks `customElements.get("shopify-store")`, finds nothing, emits the warning, and the account UI renders empty (no login icon).
+
+The symmetric trap: loading only `cdn.shopify.com/storefront/web-components.js` — that bundle DOES register `<shopify-store>` but does NOT register `<shopify-account>`, so the inner element stays undefined and the icon also doesn't render.
+
+**Fix:** Load BOTH bundles, in document order, as module scripts (deferred + ordered by default). Don't use `async` — it breaks order, and if `account.js` runs before `web-components.js` the same warning fires.
+
+```tsx
+<head>
+  <script type="module" src="https://cdn.shopify.com/storefront/web-components.js" defer nonce={nonce} />
+  <script type="module" src="https://cdn.shopify.com/storefront/web-components/account.js" defer nonce={nonce} />
+</head>
+```
+
+See [`csp-for-tracking.md`](./csp-for-tracking.md) for the full bundle map.
+
 ## "PUBLIC_STORE_DOMAIN is a read-only env var managed by Hydrogen, and it's a bare hostname"
 
 You can't modify it in Oxygen admin. The bare-hostname format (e.g. `your-shop.myshopify.com`) breaks the Shopify Storefront Web Components' `<shopify-store store-domain>` attribute, which expects a full URL.

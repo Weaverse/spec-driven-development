@@ -190,6 +190,58 @@ return (
 
 Without the protocol the bundle constructs a malformed URL like `https://.your-domain.com/api/unstable/graphql.json` → DNS fails with `ERR_NAME_NOT_RESOLVED` + CSP violation on the `connect-src` directive.
 
-Also: use the **umbrella bundle** URL, not the per-component one:
-- ✅ `https://cdn.shopify.com/storefront/web-components.js` (registers `shopify-store`, `shopify-account`, `shopify-context`, `shopify-data`, …)
-- ❌ `https://cdn.shopify.com/storefront/web-components/account.js` (registers only `shopify-account`; `<shopify-store>` won't be defined → console warning + non-functional widget)
+Storefront Web Components ship as **multiple feature bundles** — not an
+umbrella/per-component pair. Verified by fetching each bundle and listing
+the `customElements.define` calls (the registration uses a template-literal
+pattern, so plain literal-string grep misses it — search instead for
+`customElements.define\(\`shopify-${t}\`` then trace the helper that takes
+the `t` argument):
+
+| Bundle URL | Registers | Size |
+|---|---|---|
+| `cdn.shopify.com/storefront/web-components.js` | `shopify-store`, `shopify-cart`, `shopify-catalog`, `shopify-context`, `shopify-data`, `shopify-list-context`, `shopify-media`, `shopify-money`, `shopify-variant-selector` | ~92 KB |
+| `cdn.shopify.com/storefront/web-components/account.js` | `shopify-account`, `shopify-customer-account-data`, `shopify-render`, `shopify-element-wrapper` | ~31 KB |
+
+Key trap: `account.js` does NOT synchronously register `<shopify-store>`. It
+dynamic-imports a chunked `./account/store-*.js`, but the chunk arrives
+**after** `<shopify-account>`'s `connectedCallback` runs, hitting a race that
+emits the console warning:
+
+```
+[shopify-account] <shopify-store> custom element is not registered.
+  Ensure the storefront-components bundle is loaded so <shopify-account>
+  can fetch data.
+```
+
+When using `<shopify-account>` nested inside `<shopify-store>` (the pattern
+in Shopify's getting-started docs), load BOTH bundles:
+
+```tsx
+<head>
+  {/* registers shopify-store, shopify-cart, shopify-catalog, ... */}
+  <script
+    type="module"
+    src="https://cdn.shopify.com/storefront/web-components.js"
+    defer
+    nonce={nonce}
+  />
+  {/* registers shopify-account; uses already-defined shopify-store */}
+  <script
+    type="module"
+    src="https://cdn.shopify.com/storefront/web-components/account.js"
+    defer
+    nonce={nonce}
+  />
+</head>
+```
+
+**Use `defer`, not `async`.** Module scripts are deferred by default, and
+the two scripts must execute in document order — if `account.js` runs
+before `web-components.js`, the same warning fires. `async` breaks that
+guarantee.
+
+If you only need `<shopify-store>` (e.g. data fetching, no account widget),
+`web-components.js` alone is sufficient. If you only need `<shopify-account>`
+standalone without a `<shopify-store>` parent (rare, but Pilot does this for
+a sign-in icon that uses Shopify's hosted account flow), `account.js` alone
+works but emits the console warning per page load.
