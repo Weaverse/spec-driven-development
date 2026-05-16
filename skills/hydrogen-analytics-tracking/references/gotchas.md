@@ -199,6 +199,64 @@ const order = JSON.parse(rawBody);  // ← parse AFTER verification
 
 **Fix:** Trigger a deploy (any commit + push), OR in Oxygen admin manually click "Deploy" on the storefront. New workers will pick up the new secret.
 
+## "Meta CAPI Purchase events have no fbp/fbc" / "Google Ads conversions don't match on gclid" / "affiliate postback shows conversion but no click ID"
+
+**Symptom:** The browser-side `/api/track` events work fine — fbp/fbc/gclid land in Meta / GA4. But the server-side `purchase` event from the Shopify orders webhook always lands without them. Match quality drops on Meta. Google Ads Enhanced Conversions falls back to user-identifier-only matching. Affiliate networks (Traffic Junky, GoAffpro, Awin, …) show conversions with empty `aclid` / `ref`.
+
+**Cause:** The Shopify Orders webhook is a server-to-server POST from Shopify's infrastructure to your endpoint. **It carries none of the user's browser cookies.** Any forwarder that reads identifiers from request context (the natural pattern for the `/api/track` browser endpoint, e.g. `ctx.fbp = req.cookies._fbp`) will silently get empty values on the webhook path. No error thrown; the forwarder just sends a worse-quality event.
+
+**Fix:** Stash every identifier into `cart.note_attributes` server-side, on the same network round-trip as the cart mutation. Webhook reads them back from `order.note_attributes`. Full pattern — including the `_ga`/`_fbp`/`_fbc` cookie readers, the cart-action handler, and the **second cart entry path** that catches buy-now flows — lives in [`cart-attribute-stash.md`](./cart-attribute-stash.md).
+
+## "Cart attributes are empty for Buy-now purchases only"
+
+**Symptom:** Normal Add-to-Cart → cart drawer → checkout works perfectly. The order's `note_attributes` has every identifier you stash. But "Buy now" purchases (the button that goes straight from PDP to checkout) consistently land with `note_attributes: []` / `customAttributes: []` in the Shopify SubmitForCompletion mutation. The TJ / GoAffpro / Meta CAPI forwarders skip silently.
+
+**Cause:** "Buy now" buttons typically use Shopify's cart-permalink pattern `/cart/<variantId>:<qty>?checkout`, which is handled by a LOADER (`app/routes/cart/lines.tsx`) that calls `cart.create()` and immediately redirects. **It never touches the POST `/cart` action handler**, so any attribution-stash logic placed there never runs for this flow. Standard Hydrogen templates have this gap by default.
+
+**Fix:** Add the same stash to `lines.tsx` before the `cart.create()` call. Shopify's `cartCreate` mutation accepts `attributes` in the same input as `lines`, so it's a single round-trip:
+
+```ts
+import { buildAttributionCartAttrsFromCookies } from "~/utils/attribution";
+
+export async function loader({ request, context, params }: LoaderFunctionArgs) {
+  const { cart } = context;
+  // ... parse lines
+  const attributionAttrs = buildAttributionCartAttrsFromCookies(
+    request.headers.get("Cookie"),
+  );
+  const result = await cart.create({
+    lines: linesMap,
+    discountCodes: discountArray,
+    ...(attributionAttrs.length > 0 ? { attributes: attributionAttrs } : {}),
+  });
+  // ... redirect to checkout
+}
+```
+
+Audit your own routes for any other cart-mutating code path (e.g. a `/cart/upsell` endpoint, share-cart feature) and apply the same pattern there.
+
+## "3rd-party affiliate tracker's loader.js is POSTing to /cart/update.js and getting 405"
+
+**Symptom:** Browser console shows `POST https://yoursite.com/cart/update.js 405` from a script like `api.goaffpro.com/loader.js`. The request body looks like `attributes[__ref]=AFFILIATE_CODE&attributes[__sub_id]=...`.
+
+**Cause:** Affiliate trackers (GoAffpro, Refersion, etc.) were designed for **Shopify Liquid themes**, which expose AJAX cart endpoints like `/cart/update.js`, `/cart/add.js`, `/cart.js`. Hydrogen has none of these — its cart routes use loaders/actions on `/cart` (no `.js` suffix). Their loader's auto-stash of attribution into cart attributes silently fails.
+
+**Fix:** Two complementary approaches:
+
+1. **Don't rely on their tracker for cart attributes.** Implement the server-side cart-attribute stash yourself (see [`cart-attribute-stash.md`](./cart-attribute-stash.md)). Capture the same identifiers their loader captures (typically `?ref=` / `?aff=` / `?gfp_ref=` URL params) into your own attribution cookie, then stash from that cookie into cart attrs on the server. Their `/cart/update.js` 405 becomes harmless noise.
+
+2. **Optionally silence the 405** by adding a Hydrogen route that 204s the request:
+
+   ```ts
+   // app/routes/cart/update.js.ts  (or app/routes/cart.update[.]js.tsx in older templates)
+   export async function action() { return new Response(null, { status: 204 }); }
+   export async function loader() { return new Response(null, { status: 204 }); }
+   ```
+
+   Don't actually parse + apply the body — your own stash already handles the same data via the cookie route, with merge logic that doesn't clobber other apps' attributes.
+
+**For GoAffpro specifically:** their thank-you-page callback `/order_complete` is fired from `checkoutPageCallback()` in `loader.js`, which only runs on the Shopify thank-you page — a different subdomain (`checkout.<site>`) where the storefront's GTM doesn't run. Hydrogen storefronts must wire `/order_complete` themselves from the orders webhook. The `_segai_goaffpro_ref` cart attribute pattern + a server-side forwarder is the canonical path; the docs page is at <https://docs.goaffpro.com/how-tos/manual-integration/custom-shopify-integration>.
+
 ## "secrets leaked in chat / Slack / git"
 
 If `SESSION_SECRET`, `SHOPIFY_WEBHOOK_SECRET`, `GA4_API_SECRET`, `META_CAPI_ACCESS_TOKEN`, or any private key was ever in clear text in a message that reached an external service (chat, AI assistant, screenshot in a JIRA ticket), **rotate immediately**:

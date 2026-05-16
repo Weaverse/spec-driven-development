@@ -81,6 +81,7 @@ Read these in order if you're implementing from scratch. Skip to the relevant on
 | [`architecture.md`](./references/architecture.md) | Setting up the whole pipeline. Covers the dual-send pattern, dedup contract, vendor responsibilities, and how the pieces fit together. |
 | [`gtm-meta-implementation.md`](./references/gtm-meta-implementation.md) | Wiring up GTM dataLayer pushes, GA4 Event tags, Meta CAPI forwarder. Real code patterns. |
 | [`webhook-forwarding-via-builder.md`](./references/webhook-forwarding-via-builder.md) | **Weaverse-hosted storefronts:** how Shopify webhooks reach your storefront without leaking the multi-tenant app client secret. Uses the builder `WebhookForward` model + per-store signing secrets. |
+| [`cart-attribute-stash.md`](./references/cart-attribute-stash.md) | Bridging the **webhook cookie gap**: how to get `_fbp` / `_fbc` / `gclid` / affiliate click IDs from the browser into the Shopify orders webhook. Covers the two cart entry paths (POST action AND `/cart/<id>:<qty>` loader) that both need stash logic. |
 | [`oxygen-full-page-cache.md`](./references/oxygen-full-page-cache.md) | Configuring FPC, why `Set-Cookie` disables it, the `entry.server.tsx` strip trick. |
 | [`csp-for-tracking.md`](./references/csp-for-tracking.md) | CSP directives that allow Google/Meta/Hotjar; nonce vs strict-dynamic; GTM Custom HTML tags and inline-script violations. |
 | [`gotchas.md`](./references/gotchas.md) | The bugs that bite every implementation. Read this first if something isn't working. |
